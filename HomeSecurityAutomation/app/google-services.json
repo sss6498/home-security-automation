@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "257048515265",
+    "firebase_url": "https://homesecurityautomation-a58f3.firebaseio.com",
+    "project_id": "homesecurityautomation-a58f3",
+    "storage_bucket": "homesecurityautomation-a58f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257048515265:android:1278f94ace4d68bf",
+        "android_client_info": {
+          "package_name": "com.example.homesecurityautomation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257048515265-ecv86jvtaelh5ht9na3164tvgm4oem91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOv0XFhxg1Sa8vttbk6wVBJc4RkxIOV2s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
