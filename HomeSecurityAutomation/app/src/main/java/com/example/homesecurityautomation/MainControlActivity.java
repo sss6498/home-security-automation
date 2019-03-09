@@ -3,7 +3,6 @@ package com.example.homesecurityautomation;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button LogoutButton;
     private FirebaseAuth firebaseAuth;
@@ -19,13 +18,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_main_control);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null)
         {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -42,7 +41,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         {
             firebaseAuth.signOut();;
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
     }

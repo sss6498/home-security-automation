@@ -2,7 +2,6 @@ package com.example.homesecurityautomation;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button LoginButton;
     private Button SetupButton;
@@ -31,14 +30,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         progressbar = new ProgressBar(this);
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null)
         {
             //user activity
-            startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainControlActivity.class));
 
         }
 
@@ -75,12 +74,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(task.isSuccessful()){
                     //user is registered
                     //will start profle actiivty here.
-                    Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(new Intent(getApplicationContext(), UserActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainControlActivity.class));
                 }
                 else{
-                    Toast.makeText(MainActivity.this, "Could not register, Please Try Again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Could not register, Please Try Again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     //start use activity
                     finish();
-                    startActivity(new Intent(getApplicationContext(), UserActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainControlActivity.class));
 
                 }
 

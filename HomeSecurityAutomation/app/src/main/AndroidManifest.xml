@@ -15,8 +15,8 @@
         <activity android:name=".NewUserSetup" />
         <activity android:name=".AdminSettings" />
         <activity android:name=".AccessCamera" />
-        <activity android:name=".UserActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainControlActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
