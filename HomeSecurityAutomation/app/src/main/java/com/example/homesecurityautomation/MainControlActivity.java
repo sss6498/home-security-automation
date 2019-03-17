@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -26,6 +27,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private FirebaseAuth firebaseAuth;
     private TextView textViewWelcome;
     private Button camera, call;
+    private ImageButton settings;
     private Switch lightSwitch, alarmSwitch;
     private ToggleButton homeButton, awayButton, offButton;
     @Override
@@ -51,7 +53,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         homeButton = findViewById(R.id.homeButton);
         awayButton = findViewById(R.id.awayButton);
         offButton = findViewById(R.id.offButton);
-
+        settings = findViewById(R.id.settings);
 
         final TextView textView = (TextView) findViewById(R.id.text);
 // ...
@@ -81,7 +83,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 */
         LogoutButton.setOnClickListener(this);
         camera.setOnClickListener(this);
-
+        settings.setOnClickListener(this);
     }
 
     @Override
@@ -97,6 +99,11 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         {
             finish();
             startActivity(new Intent(this, AccessCamera.class));
+        }
+        if(view == settings)
+        {
+            finish();
+            startActivity(new Intent(this, AdminSettings.class));
         }
 
 
