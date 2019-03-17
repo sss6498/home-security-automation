@@ -80,8 +80,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         queue.add(stringRequest);
 */
         LogoutButton.setOnClickListener(this);
-        //On.setOnClickListener(this);
-        //Off.setOnClickListener(this);
+        camera.setOnClickListener(this);
+
     }
 
     @Override
@@ -92,12 +92,14 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-        /*
-        if(view == On)
+
+        if(view == camera)
         {
-            turnLightsOn();
+            finish();
+            startActivity(new Intent(this, AccessCamera.class));
         }
-        */
+
+
 
     }
 
