@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 
 import com.android.volley.RequestQueue;
@@ -23,8 +25,9 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private Button LogoutButton;
     private FirebaseAuth firebaseAuth;
     private TextView textViewWelcome;
-    private Button On;
-    private Button Off;
+    private Button camera, call;
+    private Switch lightSwitch, alarmSwitch;
+    private ToggleButton homeButton, awayButton, offButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +44,13 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         textViewWelcome = findViewById(R.id.textViewWelcome);
         textViewWelcome.setText("Welcome " + user.getEmail());
         LogoutButton = findViewById(R.id.LogoutButton);
-        On = findViewById(R.id.lightOn);
-        Off = findViewById(R.id.lightOff);
+        camera = findViewById(R.id.camera);
+        call = findViewById(R.id.call);
+        lightSwitch = findViewById(R.id.lightSwitch);
+        alarmSwitch = findViewById(R.id.alarmSwitch);
+        homeButton = findViewById(R.id.homeButton);
+        awayButton = findViewById(R.id.awayButton);
+        offButton = findViewById(R.id.offButton);
 
 
         final TextView textView = (TextView) findViewById(R.id.text);
@@ -72,8 +80,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         queue.add(stringRequest);
 */
         LogoutButton.setOnClickListener(this);
-        On.setOnClickListener(this);
-        Off.setOnClickListener(this);
+        //On.setOnClickListener(this);
+        //Off.setOnClickListener(this);
     }
 
     @Override
@@ -84,10 +92,12 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+        /*
         if(view == On)
         {
             turnLightsOn();
         }
+        */
 
     }
 
