@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class AccessCamera extends AppCompatActivity {
+public class AccessCamera extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView mainPic;
     private ImageButton back, gallery;
@@ -28,7 +29,9 @@ public class AccessCamera extends AppCompatActivity {
 
 
         back.setOnClickListener(this);
-        gallery.setOnClickListener((View.OnClickListener) this);
+        gallery.setOnClickListener(this);
+        call.setOnClickListener(this);
+        takePic.setOnClickListener(this);
     }
 
     @Override
@@ -45,5 +48,18 @@ public class AccessCamera extends AppCompatActivity {
             finish();
             startActivity(new Intent(this,Pictures.class));
         }
+        if(view == call)
+        {
+            Toast toast = Toast.makeText(getApplicationContext(), "Calling 9-1-1", Toast.LENGTH_SHORT); toast.show();
+        }
+        if(view == takePic)
+        {
+            TakePicture();
+        }
+    }
+
+    public void TakePicture()
+    {
+
     }
 }
