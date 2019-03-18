@@ -30,6 +30,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private ImageButton settings;
     private Switch lightSwitch, alarmSwitch;
     private ToggleButton homeButton, awayButton, offButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
