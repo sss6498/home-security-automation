@@ -28,8 +28,8 @@ public class CustomAdapter extends ArrayAdapter<Photo> {
         final Photo thisPhoto = getItem(position);
         final ImageView photo = row.findViewById(R.id.imageView);
         try{
-            Bitmap b = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), thisPhoto.getPic());
-            photo.setImageBitmap(b);
+            //Bitmap b = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), thisPhoto.getPhotoURL());
+            //photo.setImageBitmap(b);
         }
         catch(Exception e)
         {

@@ -16,9 +16,10 @@ public class Pictures extends AppCompatActivity {
     private ProgressBar progress;
     FirebaseStorage storage;
     StorageReference storageRef;
-    private GridView photoList;
+    private GridView gridview;
     private Button back;
     List<Photo> photos;
+    CustomAdapter adapter;
 
 
 
@@ -30,8 +31,12 @@ public class Pictures extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference("Stored_Images");
         photos = new ArrayList<>();
-        photoList = findViewById(R.id.photoList);
+        gridview = findViewById(R.id.gridview);
         back = findViewById(R.id.back);
+
+
+        //adapter = new CustomAdapter(this, R.layout.photo_pic, photos);
+        //gridview.setAdapter(adapter);
 
 
 
