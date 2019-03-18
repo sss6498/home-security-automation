@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "257048515265-q18tfov0hmtnq78ovdoa3no0o62mo2ss.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.homesecurityautomation",
+            "certificate_hash": "17b03810da73af4670f2d66039cc2a0535d63956"
+          }
+        },
+        {
           "client_id": "257048515265-ecv86jvtaelh5ht9na3164tvgm4oem91.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257048515265-ecv86jvtaelh5ht9na3164tvgm4oem91.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
