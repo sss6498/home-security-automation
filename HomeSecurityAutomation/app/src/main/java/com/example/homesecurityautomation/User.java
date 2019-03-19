@@ -28,7 +28,7 @@ public class User
         admin = false;
     }
 
-    public User(String name, String pass, Boolean l, Boolean a, Boolean c, Boolean cam, Boolean m)
+    public User(String name, String pass, Boolean l, Boolean a, Boolean c, Boolean cam, Boolean m, Boolean ad)
     {
         username = name;
         password = pass;
@@ -37,7 +37,7 @@ public class User
         call = c;
         camera = cam;
         mode = m;
-        admin = false;
+        admin = ad;
     }
     public Boolean setAdmin(Boolean a)
     {
