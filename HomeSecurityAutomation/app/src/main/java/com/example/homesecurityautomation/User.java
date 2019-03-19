@@ -9,6 +9,7 @@ public class User
     private Boolean mode;
     private String username;
     private String password;
+    private Boolean admin;
 
     public User()
     {
@@ -24,6 +25,7 @@ public class User
         call = false;
         camera = false;
         mode = false;
+        admin = false;
     }
 
     public User(String name, String pass, Boolean l, Boolean a, Boolean c, Boolean cam, Boolean m)
@@ -35,6 +37,16 @@ public class User
         call = c;
         camera = cam;
         mode = m;
+        admin = false;
+    }
+    public Boolean setAdmin(Boolean a)
+    {
+        admin = a;
+        return admin;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
     }
 
     public String getUsername() {

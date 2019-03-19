@@ -30,6 +30,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private ImageButton settings;
     private Switch lightSwitch, alarmSwitch;
     private ToggleButton homeButton, awayButton, offButton;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, AccessCamera.class));
         }
+
         if(view == settings)
         {
             finish();

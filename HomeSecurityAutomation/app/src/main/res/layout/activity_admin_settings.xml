@@ -7,36 +7,110 @@
     tools:context=".AdminSettings">
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="194dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/NewUserButton"
+        android:layout_width="164dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Create New User"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="594dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.955" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="194dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/FaceRecButton"
+        android:layout_width="169dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Face Rec Settings"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="526dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.958"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.852" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="294dp"
         android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Enable/Disable Automatic Features"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="201dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.341" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
+        android:textColor="@android:color/black"
         tools:layout_editor_absoluteX="176dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="396dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="79dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/back_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.967" />
+
 </android.support.constraint.ConstraintLayout>
