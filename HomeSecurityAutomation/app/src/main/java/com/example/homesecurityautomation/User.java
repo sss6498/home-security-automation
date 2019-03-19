@@ -2,6 +2,7 @@ package com.example.homesecurityautomation;
 
 public class User
 {
+    public static int numUsers = 0;
     private Boolean lights;
     private Boolean alarm;
     private Boolean call;

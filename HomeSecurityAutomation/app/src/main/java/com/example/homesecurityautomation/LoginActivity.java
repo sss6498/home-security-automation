@@ -55,40 +55,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         TextViewSignin.setOnClickListener(this);
     }
 
-    private void registerUser(){
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-
-        if(TextUtils.isEmpty(email))
-        {
-            //email is empty
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password))
-        {
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    //user is registered
-                    //will start profle actiivty here.
-                    Toast.makeText(LoginActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), MainControlActivity.class));
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Could not register, Please Try Again", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-    }
 
     private void LoginUser(){
         String email = editTextEmail.getText().toString().trim();
@@ -126,7 +92,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view)
     {
         if(view ==SetupButton) {
-            registerUser();
+            if(User.numUsers > 0)
+            {
+                Toast.makeText(LoginActivity.this, "At least one user already exists", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            finish();
+            startActivity(new Intent(this, FirstTimeUserSetup.class));
         }
 
         if(view == LoginButton)
