@@ -4,11 +4,13 @@ import android.app.DownloadManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
@@ -20,6 +22,11 @@ import com.android.volley.Response;
 //import com.google.android.gms.common.api.Response;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,7 +37,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private ImageButton settings;
     private Switch lightSwitch, alarmSwitch;
     private ToggleButton homeButton, awayButton, offButton;
-    User user;
+    DatabaseReference databaseReference;
+    User userP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +52,27 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userID = user.getEmail().replace(".","_");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/" + userID);
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                userP = dataSnapshot.getValue(User.class);
+                // ...
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("MainControlActivity", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+
+        databaseReference.addListenerForSingleValueEvent(userListener);
         textViewWelcome = findViewById(R.id.textViewWelcome);
         textViewWelcome.setText("Welcome " + user.getEmail());
         LogoutButton = findViewById(R.id.LogoutButton);
@@ -56,6 +84,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         awayButton = findViewById(R.id.awayButton);
         offButton = findViewById(R.id.offButton);
         settings = findViewById(R.id.settings);
+
 
         final TextView textView = (TextView) findViewById(R.id.text);
 // ...
@@ -86,6 +115,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         LogoutButton.setOnClickListener(this);
         camera.setOnClickListener(this);
         settings.setOnClickListener(this);
+        call.setOnClickListener(this);
+        lightSwitch.setOnClickListener(this);
     }
 
     @Override
@@ -107,6 +138,50 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         {
             finish();
             startActivity(new Intent(this, AdminSettings.class));
+        }
+        if(view == call)
+        {
+            Toast.makeText(this, "Pressed Call", Toast.LENGTH_SHORT).show();
+
+            if(userP.getCall())
+            {
+                Toast.makeText(this, "CALLING 9-1-1", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if(view == lightSwitch)
+        {
+            if(userP.getLights())
+            {
+                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                lightSwitch.toggle();
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if(view == alarmSwitch)
+        {
+            if(userP.getAlarm())
+            {
+                if(alarmSwitch.isChecked())
+                {
+                    Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
+                }
+                else if(alarmSwitch.isChecked())
+                {
+                    Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                alarmSwitch.toggle();
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
         }
 
 
