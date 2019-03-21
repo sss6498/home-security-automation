@@ -64,9 +64,8 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         back.setOnClickListener(this);
         FaceRecButton.setOnClickListener(this);
         NewUserButton.setOnClickListener(this);
-        Log.d("before table", "Before");
-        //initTable();
-        Log.d("After Table", "After");
+
+
     }
 
     public void onClick(View view)
@@ -104,6 +103,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         TextView mode = new TextView(this);
         mode.setText("MODE");
         ViewGroup.LayoutParams im = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+       /*
         ImageView lightImage = new ImageView(this);
         lightImage.setImageResource(R.drawable.lightbulb_3);
         lightImage.setLayoutParams(im);
@@ -122,15 +122,29 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         ImageView phoneImage = new ImageView(this);
         phoneImage.setImageResource(R.drawable.telephone);
         phoneImage.setLayoutParams(im);
+        */
         View view = new View(this);
         view.setMinimumHeight(2);
         view.setBackgroundColor(Color.BLACK);
 
+        TextView light = new TextView(this);
+        light.setText("Lights");
+        light.setPadding(6,2,6,2);
+        TextView alarm = new TextView(this);
+        alarm.setText("Alarm");
+        alarm.setPadding(6,2,6,2);
+        TextView camera = new TextView(this);
+        camera.setText("Camera");
+        camera.setPadding(6,2,6,2);
+        TextView phone = new TextView(this);
+        phone.setText("911");
+        phone.setPadding(6,2,6,2);
+
         header.addView(one);
-        header.addView(lightImage);
-        //header.addView(alarmImage);
-        //header.addView(cameraImage);
-        header.addView(phoneImage);
+        header.addView(light);
+        header.addView(alarm);
+        header.addView(camera);
+        header.addView(phone);
         header.addView(mode);
         table.addView(header,i);
         i++;
@@ -145,19 +159,23 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
             row.setLayoutParams(lp);
 
             TextView userText = new TextView(this);
-            userText.setText(u.getUsername());
+            userText.setText(u.getUsername().substring(0,u.getUsername().indexOf('@')));
             row.addView(userText);
             row.addView(xOrSpace(u.getLights()));
             row.addView(xOrSpace(u.getAlarm()));
             row.addView(xOrSpace(u.getCamera()));
             row.addView(xOrSpace(u.getCall()));
             row.addView(xOrSpace(u.getMode()));
-            Log.d("value", u.getAlarm().toString());
+            row.setShowDividers(TableRow.SHOW_DIVIDER_MIDDLE);
             table.addView(row,i);
             i++;
-            //table.addView(view);
-            //i++;
+            View line = new View(this);
+            line.setMinimumHeight(2);
+            line.setBackgroundColor(Color.BLACK);
+            table.addView(line);
+            i++;
         }
+        table.setShowDividers(TableLayout.SHOW_DIVIDER_MIDDLE);
 
     }
 
@@ -170,7 +188,9 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         }
         else{
             text.setText(" ");
+
         }
+        text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         return text;
     }
 }
