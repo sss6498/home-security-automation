@@ -49,7 +49,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         adapter = new ArrayAdapter<>(this, R.layout.user_text, users);
 
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -97,6 +97,44 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
                 Log.d("SelectedUser", users.get(i).toString());
             }
         });
+
+        FirebaseUser u = firebaseAuth.getCurrentUser();
+        Log.d("Current User", u.getEmail());
+        firebaseAuth.signOut();
+        if(firebaseAuth.getCurrentUser() == null)
+        {
+            Log.d("Current User", "SIGNED OUT");
+        }
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        Log.d("Signed out","sign out");
+        firebaseAuth.signInWithEmailAndPassword(admin.getUsername(), admin.getPassword());
+
+                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("success", "signInWithEmail:success");
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("fails", "signInWithEmail:failure", task.getException());
+                    Toast.makeText(DeleteUser.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                }
+
+                // ...
+            }
+        });
+*/
+        Log.d("checking sign in", "Checking");
+        if(firebaseAuth.getCurrentUser() == null)
+        {
+            Log.d("Current User", "SIGNED OUT");
+        }
     }
 
 
@@ -109,7 +147,46 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         }
         if(view == delete)
         {
-            deleteUser();
+            final User userRemove = users.get(index);
+            Log.d("Selected User", userRemove.getUsername());
+            Log.d("Password",userRemove.getPassword());
+            FirebaseUser u = firebaseAuth.getCurrentUser();
+            Log.d("Current User", u.getEmail());
+            firebaseAuth.signOut();
+            if(firebaseAuth.getCurrentUser() == null)
+            {
+                Log.d("Current User", "SIGNED OUT");
+            }
+
+            firebaseAuth = FirebaseAuth.getInstance();
+
+            Log.d("Signed out","sign out");
+            firebaseAuth.signInWithEmailAndPassword(admin.getUsername(), admin.getPassword());
+
+                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("success", "signInWithEmail:success");
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("fails", "signInWithEmail:failure", task.getException());
+                    Toast.makeText(DeleteUser.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                }
+
+                // ...
+            }
+        });
+*/
+            Log.d("checking sign in", "Checking");
+            if(firebaseAuth.getCurrentUser() == null)
+            {
+                Log.d("Current User", "SIGNED OUT");
+            }
             finish();
             startActivity(new Intent(this, AdminSettings.class));
 
@@ -132,13 +209,8 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         firebaseAuth = FirebaseAuth.getInstance();
 
         Log.d("Signed out","sign out");
-        try {
-            firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(), userRemove.getPassword());
-        }
-        catch(Exception e)
-        {
-            Log.d("ERROR", e.getMessage());
-        }
+        firebaseAuth.signInWithEmailAndPassword(admin.getUsername(), admin.getPassword());
+
                 /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -159,6 +231,11 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         });
 */
         Log.d("checking sign in", "Checking");
+        if(firebaseAuth.getCurrentUser() == null)
+        {
+            Log.d("Current User", "SIGNED OUT");
+        }
+        /*
         FirebaseUser r = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseAuth.getCurrentUser()==null)
         {
@@ -182,6 +259,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
 
         databaseReference.getDatabase().getReference("users").child(id).removeValue();
         users.remove(index);
+        */
 
     }
 
