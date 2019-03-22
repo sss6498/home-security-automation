@@ -13,6 +13,7 @@ public class FingerprintHandler extends
 
     private CancellationSignal cancellationSignal;
     private Context appContext;
+    private boolean success;
 
     public FingerprintHandler(Context context) {
         appContext = context;
@@ -52,6 +53,7 @@ public class FingerprintHandler extends
         Toast.makeText(appContext,
                 "Authentication failed.",
                 Toast.LENGTH_LONG).show();
+        this.success = false;
     }
 
     @Override
@@ -61,6 +63,13 @@ public class FingerprintHandler extends
         Toast.makeText(appContext,
                 "Authentication succeeded.",
                 Toast.LENGTH_LONG).show();
+        this.success = true;
     }
+
+    public boolean isSuccess()
+    {
+        return this.success;
+    }
+
 }
 
