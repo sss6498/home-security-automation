@@ -14,6 +14,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -27,6 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -156,6 +160,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         {
             if(userP.getLights())
             {
+                turnLightsOn();
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
             else{
@@ -190,25 +195,29 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
     public void turnLightsOn()
     {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="172.20.10.5";
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        //textView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
+        String url = "http://172.20.10.5";
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
             public void onErrorResponse(VolleyError error) {
-                //textView.setText("That didn't work!");
+                //This code is executed if there is an error.
             }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("lights", "ON"); //Add the data you'd like to send to the server.
+                return MyData;
+            }
+        };
+        MyRequestQueue.add(MyStringRequest);
     }
+
+
 }
