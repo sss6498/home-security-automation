@@ -25,7 +25,7 @@ import java.util.List;
 
 public class AdminSettings extends AppCompatActivity implements View.OnClickListener {
 
-    private Button NewUserButton, FaceRecButton, back;
+    private Button NewUserButton, FaceRecButton, back, deleteUser;
     private TableLayout table;
     DatabaseReference databaseReference;
     List<User> userList;
@@ -39,6 +39,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         FaceRecButton = findViewById(R.id.FaceRecButton);
         back = findViewById(R.id.back);
         table = findViewById(R.id.table);
+        deleteUser = findViewById(R.id.deleteUser);
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userList = new ArrayList<>();
 
@@ -64,6 +65,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         back.setOnClickListener(this);
         FaceRecButton.setOnClickListener(this);
         NewUserButton.setOnClickListener(this);
+        deleteUser.setOnClickListener(this);
 
 
     }
@@ -86,6 +88,12 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         {
             finish();
             startActivity(new Intent(this, RegisteredFaces.class));
+        }
+
+        if(view == deleteUser)
+        {
+            finish();
+            startActivity(new Intent(this, DeleteUser.class));
         }
 
 
