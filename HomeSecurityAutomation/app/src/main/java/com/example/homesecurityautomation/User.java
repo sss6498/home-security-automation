@@ -110,5 +110,10 @@ public class User
         return mode;
     }
 
+    public String toString()
+    {
+        return username;
+    }
+
 }
 

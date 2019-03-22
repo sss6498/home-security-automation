@@ -28,7 +28,7 @@ import java.util.List;
 public class DeleteUser extends AppCompatActivity implements View.OnClickListener {
 
     private Button back, delete;
-    private ListView list;
+    ListView list;
     List<User> users;
     DatabaseReference databaseReference;
     int index;
@@ -76,7 +76,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         back.setOnClickListener(this);
         delete.setOnClickListener(this);
 
-        ArrayAdapter adapter = new ArrayAdapter<User>(this, R.layout.user_text, users);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.user_text, users);
         list.setAdapter(adapter);
 
         if(!users.isEmpty()) {
@@ -120,9 +120,25 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
-
+        firebaseAuth.signInWithEmailAndPassword(admin.getUsername(),admin.getPassword());
         String id = userRemove.getUsername().replace(".", "_");
-        
+
+        databaseReference.getDatabase().getReference("users").child(id).removeValue();
+        users.remove(index);
+        ArrayAdapter adapter = new ArrayAdapter<User>(this, R.layout.user_text, users);
+        list.setAdapter(adapter);
+
+        if(!users.isEmpty()) {
+            list.setSelection(0);
+        }
+        //list.setOnItemClickListener((p, V, pos, id) -> SelectUser(pos));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                index = i;
+            }
+        });
+
     }
 
 
