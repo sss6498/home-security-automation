@@ -127,7 +127,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view){
         if(view == LogoutButton)
         {
-            firebaseAuth.signOut();;
+            firebaseAuth.signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
