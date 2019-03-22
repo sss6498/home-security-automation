@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -128,26 +129,37 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
             Log.d("Current User", "SIGNED OUT");
         }
 
-        //firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         Log.d("Signed out","sign out");
-        firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(), userRemove.getPassword()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        try {
+            firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(), userRemove.getPassword());
+        }
+        catch(Exception e)
+        {
+            Log.d("ERROR", e.getMessage());
+        }
+                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    Log.d("Signed in successfully", userRemove.getUsername());
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("success", "signInWithEmail:success");
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("fails", "signInWithEmail:failure", task.getException());
+                    Toast.makeText(DeleteUser.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
 
                 }
-                else if(!task.isSuccessful()){
-                    Log.d("could not sign in","FAILED");
-                }
 
+                // ...
             }
         });
-
+*/
         Log.d("checking sign in", "Checking");
-        FirebaseUser r =firebaseAuth.getCurrentUser();
+        FirebaseUser r = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseAuth.getCurrentUser()==null)
         {
             Log.d("NULL USER", "DID NOT SIGN IN");
