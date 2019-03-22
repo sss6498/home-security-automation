@@ -40,6 +40,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.Cipher;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 //Above for fingerprint
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -133,16 +139,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        generateKey();
+        /*generateKey();
 
         if (cipherInit())
         {
-            /*cryptoObject =
-                    new FingerprintManager.CryptoObject(cipher); */
+            //cryptoObject = new FingerprintManager.CryptoObject(cipher); //
             cryptoObject = new FingerprintManager.CryptoObject(cipher);
             FingerprintHandler helper = new FingerprintHandler(this);
             helper.startAuth(fingerprintManager, cryptoObject);
-        }
+        } */
 
 
     }
@@ -212,6 +217,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void LoginUser(){
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        Boolean fingerprintSuccess = false;
 
         if(TextUtils.isEmpty(email))
         {
@@ -220,10 +226,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        if (TextUtils.isEmpty(password))
+        ///////////////////////
+        generateKey();
+
+        if (cipherInit())
+        {
+            /*cryptoObject =
+                    new FingerprintManager.CryptoObject(cipher); */
+            cryptoObject = new FingerprintManager.CryptoObject(cipher);
+            FingerprintHandler helper = new FingerprintHandler(this);
+            helper.startAuth(fingerprintManager, cryptoObject);
+            fingerprintSuccess = helper.isSuccess();
+        }
+        //////////////////////
+
+        if (TextUtils.isEmpty(password) && !fingerprintSuccess)
         {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        if(fingerprintSuccess)
+        {
+           DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+           DataSnapshot dataSnapshot;
+           //dataSnapshot.getRef(databaseReference);
         }
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -240,6 +267,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
     }
+
 
     @Override
     public void onClick(View view)
