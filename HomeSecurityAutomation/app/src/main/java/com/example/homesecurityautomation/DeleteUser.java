@@ -2,6 +2,7 @@ package com.example.homesecurityautomation;
 
 import android.content.Intent;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +32,8 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
     List<User> users;
     DatabaseReference databaseReference;
     int index;
+    User admin;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
 
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         users = new ArrayList<>();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -45,7 +53,14 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
                     User user = postSnapshot.getValue(User.class);
                     Log.d("user adding", user.getUsername());
 
-                    users.add(user);
+                    if(user.getAdmin())
+                    {
+                        admin = user;
+                    }
+                    else {
+                        users.add(user);
+                    }
+
                 }
             }
             @Override
@@ -86,8 +101,28 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         }
         if(view == delete)
         {
+            deleteUser();
 
         }
+    }
+
+    public void deleteUser()
+    {
+        User userRemove = users.get(index);
+        firebaseAuth.signOut();
+        firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(),userRemove.getPassword());
+        FirebaseUser u = firebaseAuth.getCurrentUser();
+        u.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("DELETE", "User account deleted.");
+                }
+            }
+        });
+
+        String id = userRemove.getUsername().replace(".", "_");
+        
     }
 
 
