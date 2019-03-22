@@ -11,9 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +35,9 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
     DatabaseReference databaseReference;
     int index;
     User admin;
-    FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +46,10 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
 
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         users = new ArrayList<>();
-        firebaseAuth = FirebaseAuth.getInstance();
+        adapter = new ArrayAdapter<>(this, R.layout.user_text, users);
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
@@ -62,9 +67,17 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
                     }
 
                 }
+                list.setAdapter(adapter);
+                Log.d("list", users.toString());
+
+                if(!users.isEmpty()) {
+                    list.setSelection(0);
+                }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
 
             }
         });
@@ -76,17 +89,12 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         back.setOnClickListener(this);
         delete.setOnClickListener(this);
 
-        ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.user_text, users);
-        list.setAdapter(adapter);
-
-        if(!users.isEmpty()) {
-            list.setSelection(0);
-        }
         //list.setOnItemClickListener((p, V, pos, id) -> SelectUser(pos));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 index = i;
+                Log.d("SelectedUser", users.get(i).toString());
             }
         });
     }
@@ -102,22 +110,71 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         if(view == delete)
         {
             deleteUser();
+            finish();
+            startActivity(new Intent(this, AdminSettings.class));
 
         }
     }
 
     public void deleteUser()
     {
-        User userRemove = users.get(index);
-        firebaseAuth.signOut();
-        firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(),userRemove.getPassword());
+        final User userRemove = users.get(index);
+        Log.d("Selected User", userRemove.getUsername());
+        Log.d("Password",userRemove.getPassword());
         FirebaseUser u = firebaseAuth.getCurrentUser();
-        u.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+        Log.d("Current User", u.getEmail());
+        firebaseAuth.signOut();
+        if(firebaseAuth.getCurrentUser() == null)
+        {
+            Log.d("Current User", "SIGNED OUT");
+        }
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        Log.d("Signed out","sign out");
+        try {
+            firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(), userRemove.getPassword());
+        }
+        catch(Exception e)
+        {
+            Log.d("ERROR", e.getMessage());
+        }
+                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("success", "signInWithEmail:success");
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("fails", "signInWithEmail:failure", task.getException());
+                    Toast.makeText(DeleteUser.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
+                }
+
+                // ...
+            }
+        });
+*/
+        Log.d("checking sign in", "Checking");
+        FirebaseUser r = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseAuth.getCurrentUser()==null)
+        {
+            Log.d("NULL USER", "DID NOT SIGN IN");
+        }
+        //Log.d("delete user: ", r.getEmail());
+        r.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d("DELETE", "User account deleted.");
                 }
+                else{
+                    Log.d("FAILED", "DID NOT DELETE");
+                }
+
             }
         });
         firebaseAuth.signInWithEmailAndPassword(admin.getUsername(),admin.getPassword());
@@ -125,19 +182,6 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
 
         databaseReference.getDatabase().getReference("users").child(id).removeValue();
         users.remove(index);
-        ArrayAdapter adapter = new ArrayAdapter<User>(this, R.layout.user_text, users);
-        list.setAdapter(adapter);
-
-        if(!users.isEmpty()) {
-            list.setSelection(0);
-        }
-        //list.setOnItemClickListener((p, V, pos, id) -> SelectUser(pos));
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                index = i;
-            }
-        });
 
     }
 
