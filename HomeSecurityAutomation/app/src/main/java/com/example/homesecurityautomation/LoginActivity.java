@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean fingerprintSuccess = false;
     FingerprintHandler helper;
     private List<User> userlist;
-    String newPass;
+    private String newPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,7 +248,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //FingerPrintScan();
         //////////////////////
         //Toast.makeText(this, "Passed first step", Toast.LENGTH_SHORT).show();
-        fingerprintSuccess = false;
+        //fingerprintSuccess = true;
+
+        if(!fingerprintSuccess)
+        {
+            FingerPrintScan();
+        }
+
+
+
+
         Log.d("The success is ", "" + fingerprintSuccess);
         //final ArrayList<User> userlist = new ArrayList<User>();
         if(fingerprintSuccess)
@@ -268,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                        {
                            userlist.add(foundUser);
                            Log.d("Yes", userlist.get(0).getPassword());
-                           newPass = userlist.get(0).getPassword();
+                           attemptLogin(userlist.get(0).getUsername(),userlist.get(0).getPassword());
                            return;
                        }
                    }
@@ -286,8 +295,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
            }*/
            //password = userlist.get(0).getPassword();
 
-            password = newPass;
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            /*firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful())
@@ -299,7 +307,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                 }
-            });
+            }); */
            //dataSnapshot.getRef(databaseReference);
         }
         if (TextUtils.isEmpty(password))
@@ -326,6 +334,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
         }
 
+    }
+
+    public void attemptLogin(String username, String password)
+    {
+        firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {
+                    //start use activity
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), MainControlActivity.class));
+
+                }
+
+            }
+        });
     }
 
 
