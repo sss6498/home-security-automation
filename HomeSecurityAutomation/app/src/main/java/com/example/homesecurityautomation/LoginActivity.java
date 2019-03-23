@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button LoginButton;
     private Button SetupButton;
+    private Button EnableFPButton;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView TextViewSignin;
@@ -80,6 +81,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     FingerprintHandler helper;
     private List<User> userlist;
     private String newPass;
+    private boolean isPressed = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +101,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         LoginButton = findViewById(R.id.LoginButton);
         SetupButton = findViewById(R.id.SetupButton);
+        EnableFPButton = findViewById(R.id.EnableFPButton);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         TextViewSignin = findViewById(R.id.TextViewSignin);
 
         LoginButton.setOnClickListener(this);
         SetupButton.setOnClickListener(this);
+        EnableFPButton.setOnClickListener(this);
         TextViewSignin.setOnClickListener(this);
 
         //Fingerprint
@@ -147,19 +152,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        generateKey();
-        //boolean fingerprintSuccess = false;
-        if (cipherInit())
-        {
-            /*cryptoObject =
-                    new FingerprintManager.CryptoObject(cipher); */
-            cryptoObject = new FingerprintManager.CryptoObject(cipher);
-            helper = new FingerprintHandler(this);
-            helper.startAuth(fingerprintManager, cryptoObject);
-            fingerprintSuccess = helper.isSuccess();
-            String result = "" + fingerprintSuccess;
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-        }
+//        generateKey();
+//        //boolean fingerprintSuccess = false;
+//        if (cipherInit())
+//        {
+//            /*cryptoObject =
+//                    new FingerprintManager.CryptoObject(cipher); */
+//            cryptoObject = new FingerprintManager.CryptoObject(cipher);
+//            helper = new FingerprintHandler(this);
+//            helper.startAuth(fingerprintManager, cryptoObject);
+//            fingerprintSuccess = helper.isSuccess();
+//            String result = "" + fingerprintSuccess;
+//            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+//        }
 
     }
     protected void generateKey() {
@@ -250,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Toast.makeText(this, "Passed first step", Toast.LENGTH_SHORT).show();
         //fingerprintSuccess = true;
 
-        if(!fingerprintSuccess)
+        if(!fingerprintSuccess && isPressed)
         {
             FingerPrintScan();
         }
@@ -312,8 +317,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         if (TextUtils.isEmpty(password))
         {
-            String result = "" + fingerprintSuccess;
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            if(!fingerprintSuccess)
+            {
+                Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            }
             //Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -375,6 +382,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(view == TextViewSignin)
         {
             //
+        }
+
+        if(view == EnableFPButton)
+        {
+            if(!isPressed)
+            {
+                final String email1 = editTextEmail.getText().toString().trim();
+
+                if(TextUtils.isEmpty(email1))
+                {
+                    //email is empty
+                    Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                isPressed = true;
+                generateKey();
+                //boolean fingerprintSuccess = false;
+                if (cipherInit())
+                {
+            /*cryptoObject =
+                    new FingerprintManager.CryptoObject(cipher); */
+                    cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                    helper = new FingerprintHandler(this);
+                    helper.startAuth(fingerprintManager, cryptoObject);
+                    fingerprintSuccess = helper.isSuccess();
+                    String result = "" + fingerprintSuccess;
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(this, "Fingerprint enabled", Toast.LENGTH_SHORT).show();
+
+            }
+
         }
     }
 }
