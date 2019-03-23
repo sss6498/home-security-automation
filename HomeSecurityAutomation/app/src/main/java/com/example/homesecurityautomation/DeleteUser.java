@@ -35,7 +35,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
     DatabaseReference databaseReference;
     int index;
     User admin;
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth;
 
     ArrayAdapter adapter;
 
@@ -44,11 +44,25 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_user);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         users = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, R.layout.user_text, users);
+        list = findViewById(R.id.list);
+        back = findViewById(R.id.back);
+        delete = findViewById(R.id.delete);
 
+        back.setOnClickListener(this);
+        delete.setOnClickListener(this);
 
+        //list.setOnItemClickListener((p, V, pos, id) -> SelectUser(pos));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                index = i;
+                Log.d("SelectedUser", users.get(i).toString());
+            }
+        });
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -82,116 +96,24 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
             }
         });
 
-        list = findViewById(R.id.list);
-        back = findViewById(R.id.back);
-        delete = findViewById(R.id.delete);
-
-        back.setOnClickListener(this);
-        delete.setOnClickListener(this);
-
-        //list.setOnItemClickListener((p, V, pos, id) -> SelectUser(pos));
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                index = i;
-                Log.d("SelectedUser", users.get(i).toString());
-            }
-        });
-
-        FirebaseUser u = firebaseAuth.getCurrentUser();
-        Log.d("Current User", u.getEmail());
-        firebaseAuth.signOut();
-        if(firebaseAuth.getCurrentUser() == null)
-        {
-            Log.d("Current User", "SIGNED OUT");
-        }
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        Log.d("Signed out","sign out");
-        firebaseAuth.signInWithEmailAndPassword(admin.getUsername(), admin.getPassword());
-
-                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("success", "signInWithEmail:success");
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("fails", "signInWithEmail:failure", task.getException());
-                    Toast.makeText(DeleteUser.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-
-                }
-
-                // ...
-            }
-        });
-*/
-        Log.d("checking sign in", "Checking");
-        if(firebaseAuth.getCurrentUser() == null)
-        {
-            Log.d("Current User", "SIGNED OUT");
-        }
     }
 
 
-    public void onClick(View view)
-    {
-        if(view == back)
-        {
+    public void onClick(View view) {
+        if (view == back) {
             finish();
             startActivity(new Intent(this, AdminSettings.class));
         }
-        if(view == delete)
-        {
-            final User userRemove = users.get(index);
-            Log.d("Selected User", userRemove.getUsername());
-            Log.d("Password",userRemove.getPassword());
-            FirebaseUser u = firebaseAuth.getCurrentUser();
-            Log.d("Current User", u.getEmail());
-            firebaseAuth.signOut();
-            if(firebaseAuth.getCurrentUser() == null)
-            {
-                Log.d("Current User", "SIGNED OUT");
-            }
+        if (view == delete) {
 
-            firebaseAuth = FirebaseAuth.getInstance();
-
-            Log.d("Signed out","sign out");
-            firebaseAuth.signInWithEmailAndPassword(admin.getUsername(), admin.getPassword());
-
-                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("success", "signInWithEmail:success");
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("fails", "signInWithEmail:failure", task.getException());
-                    Toast.makeText(DeleteUser.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-
-                }
-
-                // ...
-            }
-        });
-*/
-            Log.d("checking sign in", "Checking");
-            if(firebaseAuth.getCurrentUser() == null)
-            {
-                Log.d("Current User", "SIGNED OUT");
-            }
+            deleteUser();
             finish();
             startActivity(new Intent(this, AdminSettings.class));
 
         }
+
     }
+
 
     public void deleteUser()
     {
@@ -201,17 +123,12 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
         FirebaseUser u = firebaseAuth.getCurrentUser();
         Log.d("Current User", u.getEmail());
         firebaseAuth.signOut();
-        if(firebaseAuth.getCurrentUser() == null)
-        {
+        if(firebaseAuth.getCurrentUser() == null) {
             Log.d("Current User", "SIGNED OUT");
         }
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
         Log.d("Signed out","sign out");
-        firebaseAuth.signInWithEmailAndPassword(admin.getUsername(), admin.getPassword());
-
-                /*.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(), userRemove.getPassword()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -229,16 +146,13 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
                 // ...
             }
         });
-*/
+
         Log.d("checking sign in", "Checking");
-        if(firebaseAuth.getCurrentUser() == null)
+        FirebaseUser r = firebaseAuth.getCurrentUser();
+        if(r==null)
         {
-            Log.d("Current User", "SIGNED OUT");
-        }
-        /*
-        FirebaseUser r = FirebaseAuth.getInstance().getCurrentUser();
-        if(firebaseAuth.getCurrentUser()==null)
-        {
+            firebaseAuth.signInWithEmailAndPassword(userRemove.getUsername(), userRemove.getPassword());
+            r = firebaseAuth.getCurrentUser();
             Log.d("NULL USER", "DID NOT SIGN IN");
         }
         //Log.d("delete user: ", r.getEmail());
@@ -259,9 +173,8 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
 
         databaseReference.getDatabase().getReference("users").child(id).removeValue();
         users.remove(index);
-        */
+
 
     }
-
-
 }
+
