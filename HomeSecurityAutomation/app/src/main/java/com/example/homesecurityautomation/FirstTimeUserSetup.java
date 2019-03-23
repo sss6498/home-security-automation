@@ -32,7 +32,7 @@ public class FirstTimeUserSetup extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_first_time_user_setup);
 
         back = findViewById(R.id.back);
-        createAccount = findViewById(R.id.creatAccount);
+        createAccount = findViewById(R.id.createAccount);
         emailText = findViewById(R.id.emailText);
         passwordText = findViewById(R.id.passwordText);
 
