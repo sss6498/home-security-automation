@@ -20,6 +20,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is for the pictures page
 public class Pictures extends AppCompatActivity implements View.OnClickListener{
     private ProgressBar progress;
     FirebaseStorage storage;
@@ -33,7 +34,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
 
 
 
-
+    //This method occurs when the page is first loaded
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
         back = findViewById(R.id.back);
         mProgressCircle = findViewById(R.id.progressCircle);
 
+        //The following two Override methods take a DataSnapshot and iterate through the list of data in the firebase
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,6 +84,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
 
     }
 
+    //This method provides the onClick activity for the back button
     @Override
     public void onClick(View view) {
         if(view == back)
