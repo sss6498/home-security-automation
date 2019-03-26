@@ -1,6 +1,6 @@
 package com.example.homesecurityautomation;
 
-import android.app.DownloadManager;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.volley.Response;
-//import com.google.android.gms.common.api.Response;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+//This class in the main control activity for the user. It allows the user to control the lights, alarm, and other features of the system. The class also helps the user navigate to the other features.
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button LogoutButton;
@@ -44,6 +44,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     DatabaseReference databaseReference;
     User userP;
 
+    //This method sets up the MainControlActivity page by initializing the UI elements and setting up the features for the user to interact with.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String userID = user.getEmail().replace(".","_");
         databaseReference = FirebaseDatabase.getInstance().getReference("users/" + userID);
+
+        //Sets up the listener to retrieve the current user information and privileges.
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,6 +126,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         lightSwitch.setOnClickListener(this);
     }
 
+    //This method responds to the listener objects such as the buttons and switches on the UI and will redirect to perform the appropriate actions based on the user input.
     @Override
     public void onClick(View view){
         if(view == LogoutButton)
@@ -193,6 +197,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    //This method is used to send an http request to the server to turn on the lights.
     public void turnLightsOn()
     {
         RequestQueue MyRequestQueue = Volley.newRequestQueue(this);

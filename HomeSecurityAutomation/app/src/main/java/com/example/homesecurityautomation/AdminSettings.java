@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class controls the Administrator Settings page and allows the admin of the app to view certain data or access features that are designated only for the admin.s
 public class AdminSettings extends AppCompatActivity implements View.OnClickListener {
 
     private Button NewUserButton, FaceRecButton, back, deleteUser;
@@ -102,6 +103,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //This method uses the user list array list and dynamically generates a table for the admin to view each user's privileges.
     public void initTable()
     {
         int i = 0;
@@ -163,6 +165,8 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         i++;
 
         Log.d("in initTable", "making table");
+
+        //This loop takes in each user in the userList array list creates a row for the user and fills in the table according to the privileges.
         for (User u: userList) {
 
             TableRow row= new TableRow(this);
@@ -190,6 +194,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //This method is used by initTable() to write in an "x" or leave a blank in the user privilege table to show whether a user has a designated privilege to a certain feature.
     public TextView xOrSpace(Boolean value)
     {
         TextView text = new TextView(this);
