@@ -84,11 +84,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean isPressed = false;
 
 
+    //This method functions as soon as the page loads
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Initializes firebase apis for authentiaction
         FirebaseApp.initializeApp(this);
         progressbar = new ProgressBar(this);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -99,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 
+        //Initializes buttons and textboxes
         LoginButton = findViewById(R.id.LoginButton);
         SetupButton = findViewById(R.id.SetupButton);
         EnableFPButton = findViewById(R.id.EnableFPButton);
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = findViewById(R.id.editTextPassword);
         TextViewSignin = findViewById(R.id.TextViewSignin);
 
+        //Creates onClick listeners for onClick actions
         LoginButton.setOnClickListener(this);
         SetupButton.setOnClickListener(this);
         EnableFPButton.setOnClickListener(this);
@@ -167,6 +171,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        }
 
     }
+
+    //This function provides a means for generating a key required to authenticate a fingerprint instance
     protected void generateKey() {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
@@ -203,6 +209,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //This method helps tie the key generated to the actual fingerprint computation
     public boolean cipherInit() {
         try {
             cipher = Cipher.getInstance(
@@ -229,6 +236,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //This method calls the startAuth method to take input from the fingerprint scanner
     private void FingerPrintScan(){
         helper.startAuth(fingerprintManager, cryptoObject);
         this.fingerprintSuccess = helper.isSuccess();
@@ -237,6 +245,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //return fingerprintSuccess;
     }
 
+    //This method checks to see if the text credentials are correct and logs onto the user's account
+    //It also performs fingerprint authentiaction utilizing the above methods as well
     private void LoginUser(){
         final String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -325,6 +335,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
+        //Else occurs when only username and password are selected and no fingerprint is involved
         else {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -343,6 +354,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //Calls to this method will attemp to login with the given credentials to the firebase
     public void attemptLogin(String username, String password)
     {
         firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -361,6 +373,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    //Below are the events that occur when a specific button is clicked
     @Override
     public void onClick(View view)
     {
