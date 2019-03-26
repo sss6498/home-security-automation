@@ -1,5 +1,6 @@
 package com.example.homesecurityautomation;
 
+//This class is for the photo object for pictures to be viewed
 public class Photo
 {
     private String url;
