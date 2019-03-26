@@ -23,10 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is used for the RegisterNewFace page
 public class RegisterNewFace extends AppCompatActivity implements View.OnClickListener {
     private Button addFace, camButton, back, retakeButton;
     DatabaseReference databaseReference;
 
+    //This method occurs when the page is first loaded
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         back.setOnClickListener(this);
     }
 
+    //This method provides an onCLick event for the back button
     public void onClick(View view) {
         if (view == back) {
             finish();
