@@ -8,6 +8,7 @@ import android.os.CancellationSignal;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+//This class handles what occurs when the fingerprint sensor is involved
 public class FingerprintHandler extends
         FingerprintManager.AuthenticationCallback {
 
@@ -21,6 +22,7 @@ public class FingerprintHandler extends
         appContext = context;
     }
 
+    //This method enables and determines results of a fingerprint scan
     public void startAuth(FingerprintManager manager,
                           FingerprintManager.CryptoObject cryptoObject) {
 
@@ -34,6 +36,8 @@ public class FingerprintHandler extends
         manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
     }
 
+    //The below 4 methods occur depending on what occurred after the fingerprint authentication
+    //Primarily a failed or succeeded response will occur and they are exactly what they are named to be.
     @Override
     public void onAuthenticationError(int errMsgId,
                                       CharSequence errString) {
@@ -70,6 +74,8 @@ public class FingerprintHandler extends
 
     }
 
+    //This method simply provides a means to get the success boolean for operation in other classes for
+    //the given FingerprintHandler instance.
     public boolean isSuccess()
     {
         return this.success;
@@ -78,4 +84,3 @@ public class FingerprintHandler extends
 
 
 }
-
