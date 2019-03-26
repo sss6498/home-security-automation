@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+//This class is for the NewUserSetup page
 public class NewUserSetup extends AppCompatActivity implements View.OnClickListener{
 
     //#2aac4a - green
@@ -32,6 +33,7 @@ public class NewUserSetup extends AppCompatActivity implements View.OnClickListe
     FirebaseAuth firebaseAuth;
     DatabaseReference database;
 
+    //This method creates all of the buttons/inputboxes and the OnClickListeners upon loading the page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ public class NewUserSetup extends AppCompatActivity implements View.OnClickListe
         createAccount.setOnClickListener(this);
     }
 
+    //This method provides events for each button when they are clicked
     public void onClick(View view)
     {
         if(view == back)
@@ -130,13 +133,16 @@ public class NewUserSetup extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //This method registers a new user to the firebase
     public void registerUser()
     {
+        //Initializes the firebase apis for authentication and database access
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
         final String email = emailText.getText().toString().trim();
         final String password = passwordText.getText().toString().trim();
 
+        //Checks if email box is empty
         if(TextUtils.isEmpty(email))
         {
             //email is empty
@@ -144,11 +150,13 @@ public class NewUserSetup extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        //Checks if password box is empty
         if (TextUtils.isEmpty(password))
         {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
+        //Creates new user in firebase
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

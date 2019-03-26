@@ -11,13 +11,15 @@ import android.widget.ImageView;
 import java.util.List;
 
 
-
+//This is an adapter class used to convert a list of photos into a format that can be displayed on the app for the user to easily view.
 public class CustomAdapter extends ArrayAdapter<Photo> {
 
+    //constructor for adapter object
     public CustomAdapter(Context context, int resourceid, List<Photo> photos) {
         super(context, resourceid, photos);
     }
 
+    //Gets the view that requires the adapters operations and returns a view that can be used to display the object.
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
