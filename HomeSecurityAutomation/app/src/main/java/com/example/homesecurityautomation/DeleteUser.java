@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is used to delete a user from the app. Only the admin can delete a user.
 public class DeleteUser extends AppCompatActivity implements View.OnClickListener {
 
     private Button back, delete;
@@ -39,6 +40,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
 
     ArrayAdapter adapter;
 
+    //Sets up the UI page and creates a listview for the admin to see the list of users and select one to delete.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,8 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
                 Log.d("SelectedUser", users.get(i).toString());
             }
         });
+
+        //Gets the list of users from the database and puts them into and array list and displays the list in a listview
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -99,6 +103,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
     }
 
 
+    //A listener method that repsonds to user input of a button click and performs the appropriate actions.
     public void onClick(View view) {
         if (view == back) {
             finish();
@@ -115,6 +120,7 @@ public class DeleteUser extends AppCompatActivity implements View.OnClickListene
     }
 
 
+    //This method will delete a user by signing in to the user to be deleted so the user can delete themselves and then sign back into the administrator.
     public void deleteUser()
     {
         final User userRemove = users.get(index);
