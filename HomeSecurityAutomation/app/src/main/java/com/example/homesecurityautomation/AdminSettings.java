@@ -44,7 +44,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userList = new ArrayList<>();
 
-        //Adds a listener for the database to retirve data relating to each user privilege and put the data into user objects.
+        //Adds a listener for the database to retrieve data relating to each user privilege and put the data into user objects.
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
