@@ -9,12 +9,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+//This class is for the AccessCamera page after clicking AccessCamera in the MainControlActivity page
 public class AccessCamera extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView mainPic;
     private ImageButton back, gallery;
     private Button takePic, call;
 
+    //This method loads up the buttons and onclicklisteners as soon as the page is first loaded
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         takePic.setOnClickListener(this);
     }
 
+    //This method provides onclick events for each of the buttons given in this page
     @Override
     public void onClick(View view)
     {
