@@ -59,6 +59,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+//This class provides the main way for the user to interact with the login page
+//to enter their credentials and attempt to login via either username and password
+//or fingerprint authentication
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button LoginButton;
