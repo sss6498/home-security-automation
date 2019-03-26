@@ -23,24 +23,30 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//this class is meant to control all of the features on the user settings pages, including the back button, the privileges layout
 public class UserSettings extends AppCompatActivity implements View.OnClickListener{
 
+
+    //this is preparing the instances of objects necessary for the obejects in the UI page
     private Button back;
     private TableLayout table;
     DatabaseReference databaseReference;
     List<User> userList;
 
+    //this method automatically gets called when the page is opened we use this to set up the back button and the table
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_settings);
 
+
+        //the following four lines set up the declared objects
         back = findViewById(R.id.back);
         table = findViewById(R.id.table);
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userList = new ArrayList<>();
 
+        //Adds a listener for the database to retrieve data relating to each user privilege and put the data into user objects.
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -69,6 +75,7 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //this method makes the table of privileges and makes the names of the columns
     public void initTable() {
         int i = 0;
 
@@ -111,6 +118,8 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
         i++;
 
         Log.d("in initTable", "making table");
+
+        //This loop takes in each user in the userList array list creates a row for the user and fills in the table according to the privileges.
         for (User u: userList) {
 
             TableRow row= new TableRow(this);
@@ -136,6 +145,8 @@ public class UserSettings extends AppCompatActivity implements View.OnClickListe
         }
         table.setShowDividers(TableLayout.SHOW_DIVIDER_MIDDLE);
     }
+
+    //This method is used by initTable() to write in an "x" or leave a blank in the user privilege table to show whether a user has a designated privilege to a certain feature.
     public TextView xOrSpace(Boolean value)
     {
         TextView text = new TextView(this);
