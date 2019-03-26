@@ -23,9 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisterNewFace extends AppCompatActivity {
+public class RegisterNewFace extends AppCompatActivity implements View.OnClickListener {
     private Button addFace, camButton, back, retakeButton;
     DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +34,11 @@ public class RegisterNewFace extends AppCompatActivity {
         back = findViewById(R.id.back);
         back.setOnClickListener(this);
     }
-}
-    public void onClick(View view)
-    {
-        if(view == back)
-        {
+
+    public void onClick(View view) {
+        if (view == back) {
             finish();
             startActivity(new Intent(this, MainControlActivity.class));
         }
     }
+}

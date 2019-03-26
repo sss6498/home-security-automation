@@ -30,6 +30,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     DatabaseReference databaseReference;
     List<User> userList;
 
+    //This method starts up the current activity and displays the administrator settings to the user.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         userList = new ArrayList<>();
 
+        //Adds a listener for the database to retirve data relating to each user privilege and put the data into user objects.
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -70,6 +72,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //This method is used to respond to the button events for each class. It takes in a view object and performs the appropriate actions depending on which button was pressed.
     public void onClick(View view)
     {
         if(view == back)
