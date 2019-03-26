@@ -23,11 +23,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+//this class will utilize the camera api to set up a page where the user can take a picture of themselves to register thier face in teh system
 public class RegisterNewFace extends AppCompatActivity implements View.OnClickListener {
+
+    //The following two lines setup the objects that will be used later
     private Button addFace, camButton, back, retakeButton;
     DatabaseReference databaseReference;
 
     @Override
+    //this method gets called everytime the page is opened. It sets up the back button
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_new_face);
