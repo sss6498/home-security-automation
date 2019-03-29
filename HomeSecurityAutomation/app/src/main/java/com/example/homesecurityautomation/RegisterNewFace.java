@@ -23,11 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
 //this class will utilize the camera api to set up a page where the user can take a picture of themselves to register thier face in teh system
-=======
+
 //This class is used for the RegisterNewFace page
->>>>>>> fd7946837bf56f6eb3c8001dc499df9683c31d8a
+
 public class RegisterNewFace extends AppCompatActivity implements View.OnClickListener {
 
     //The following two lines setup the objects that will be used later
