@@ -59,9 +59,9 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
                     photos.add(pic);
                 }
 
-                //adapter = new CustomAdapter(Pictures.this, photos);
+                adapter = new CustomAdapter(Pictures.this, photos);
 
-                //mRecyclerView.setAdapter(mAdapter);
+                gridview.setAdapter(adapter);
 
                 //mAdapter.setOnItemClickListener(Pictures.this);
 
