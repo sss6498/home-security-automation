@@ -86,6 +86,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     private static final String TAG = "AndroidCameraApi";
     private Button takePictureButton;
     private TextureView textureView;
+    private Button rotate;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -105,6 +106,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    private boolean isFront = true;
 
     //private static String Rotate = null;
     //ImageView RotateFront;
@@ -117,6 +119,8 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_register_new_face);
         back = findViewById(R.id.back);
         back.setOnClickListener(this);
+        rotate = findViewById(R.id.rotate);
+        rotate.setOnClickListener(this);
 
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
@@ -140,6 +144,20 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         }
         if (view == takePictureButton) {
             takePicture();
+        }
+        if(view == rotate)
+        {
+            if(isFront)
+            {
+                openCameraBack();
+                isFront = false;
+            }
+
+            else
+            {
+                openCamera();
+                isFront = true;
+            }
         }
     }
 
@@ -321,6 +339,27 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         Log.e(TAG, "is camera open");
         try {
+            cameraId = manager.getCameraIdList()[1];
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
+            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            assert map != null;
+            imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
+            // Add permission for camera and let user grant the permission
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(RegisterNewFace.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
+                return;
+            }
+            manager.openCamera(cameraId, stateCallback, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+        Log.e(TAG, "openCamera X");
+    }
+
+    private void openCameraBack() {
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        Log.e(TAG, "is camera open");
+        try {
             cameraId = manager.getCameraIdList()[0];
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -337,6 +376,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         }
         Log.e(TAG, "openCamera X");
     }
+
     protected void updatePreview() {
         if(null == cameraDevice) {
             Log.e(TAG, "updatePreview error, return");
