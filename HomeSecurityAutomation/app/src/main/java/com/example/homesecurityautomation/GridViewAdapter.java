@@ -65,8 +65,7 @@ import java.util.List;
         }
 
         Photo pic = photoList.get(position);
-        Glide
-                .with(mContext)
+        Glide.with(mContext)
                 .load(pic.getPhotoURL())
                 .placeholder(R.mipmap.ic_launcher)
                 .centerCrop()
