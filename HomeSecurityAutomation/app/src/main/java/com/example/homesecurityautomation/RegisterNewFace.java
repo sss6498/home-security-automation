@@ -8,13 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.SurfaceView;
+import android.view.SurfaceHolder;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,9 +39,9 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     Camera camera;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
-    PictureCallback rawCallback;
+    /*PictureCallback rawCallback;
     ShutterCallback shutterCallback;
-    PictureCallback jpegCallback;
+    PictureCallback jpegCallback;*/
 
     //This method occurs when the page is first loaded
     @Override
