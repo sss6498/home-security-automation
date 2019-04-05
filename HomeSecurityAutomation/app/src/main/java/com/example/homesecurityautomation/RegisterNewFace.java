@@ -1,6 +1,7 @@
 package com.example.homesecurityautomation;
 
 import android.content.Intent;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +35,12 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     //The following two lines setup the objects that will be used later
     private Button addFace, camButton, back, retakeButton;
     DatabaseReference databaseReference;
+    Camera camera;
+    SurfaceView surfaceView;
+    SurfaceHolder surfaceHolder;
+    PictureCallback rawCallback;
+    ShutterCallback shutterCallback;
+    PictureCallback jpegCallback;
 
     //This method occurs when the page is first loaded
     @Override
@@ -47,7 +56,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view == back) {
             finish();
-            startActivity(new Intent(this, MainControlActivity.class));
+            startActivity(new Intent(this, RegisteredFaces.class));
         }
     }
 }
