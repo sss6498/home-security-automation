@@ -179,7 +179,7 @@ public class Uploads extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
                                     @SuppressWarnings("VisibleForTests")
-                                    Photo imageUploadInfo = new Photo(taskSnapshot.getDownloadUrl().toString());
+                                    Photo imageUploadInfo = new Photo(FilePathUri.toString());
 
                                     // Getting image upload ID.
                                     String ImageUploadId = databaseReference.push().getKey();
