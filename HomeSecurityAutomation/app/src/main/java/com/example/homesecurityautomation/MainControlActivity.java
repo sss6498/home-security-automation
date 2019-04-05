@@ -37,7 +37,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private Button LogoutButton;
     private FirebaseAuth firebaseAuth;
     private TextView textViewWelcome;
-    private Button camera, call;
+    private Button camera, call, uploadButton;
     private ImageButton settings;
     private Switch lightSwitch, alarmSwitch;
     private ToggleButton homeButton, awayButton, offButton;
@@ -91,6 +91,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         awayButton = findViewById(R.id.awayButton);
         offButton = findViewById(R.id.offButton);
         settings = findViewById(R.id.settings);
+        uploadButton = findViewById(R.id.Upload);
 
 
         final TextView textView = (TextView) findViewById(R.id.text);
@@ -124,11 +125,17 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         settings.setOnClickListener(this);
         call.setOnClickListener(this);
         lightSwitch.setOnClickListener(this);
+        uploadButton.setOnClickListener(this);
     }
 
     //This method responds to the listener objects such as the buttons and switches on the UI and will redirect to perform the appropriate actions based on the user input.
     @Override
     public void onClick(View view){
+        if(view == uploadButton)
+        {
+            finish();
+            startActivity(new Intent(this, Uploads.class));
+        }
         if(view == LogoutButton)
         {
             firebaseAuth.signOut();
