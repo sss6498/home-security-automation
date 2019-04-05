@@ -179,15 +179,23 @@ public class Uploads extends AppCompatActivity {
                                     // Showing toast message after done uploading.
                                     Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
-                                    @SuppressWarnings("VisibleForTests")
-                                    Photo imageUploadInfo = new Photo(storageReference2nd.getDownloadUrl().toString());
-                                    Log.d("fileURL", storageReference2nd.getDownloadUrl().toString());
+                                    //@SuppressWarnings("VisibleForTests")
+                                    //Photo imageUploadInfo = new Photo(storageReference2nd.getDownloadUrl().toString());
+                                    storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Photo imageUploadInfo = new Photo(uri.toString());
+                                            Log.d("FilePath", "onSuccess: uri= "+ uri.toString());
+                                            // Getting image upload ID.
+                                            String ImageUploadId = databaseReference.push().getKey();
 
-                                    // Getting image upload ID.
-                                    String ImageUploadId = databaseReference.push().getKey();
+                                            // Adding image upload id s child element into databaseReference.
+                                            databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                                        }
+                                    });
+                                    //Log.d("fileURL", storageReference2nd.getDownloadUrl().toString());
 
-                                    // Adding image upload id s child element into databaseReference.
-                                    databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+
                                 }
                             })
                             // If something goes wrong .
