@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -59,8 +60,8 @@ public class Uploads extends AppCompatActivity {
     //ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_uploads);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_uploads);
 
                 // Assign FirebaseStorage instance to storageReference.
                 storageReference = FirebaseStorage.getInstance().getReference();
@@ -163,7 +164,7 @@ public class Uploads extends AppCompatActivity {
                     //progressDialog.show();
 
                     // Creating second StorageReference.
-                    StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+                    final StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
 
                     // Adding addOnSuccessListener to second StorageReference.
                     storageReference2nd.putFile(FilePathUri)
@@ -181,7 +182,8 @@ public class Uploads extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
                                     @SuppressWarnings("VisibleForTests")
-                                    Photo imageUploadInfo = new Photo(FilePathUri.toString());
+                                    Photo imageUploadInfo = new Photo(storageReference2nd.getDownloadUrl().toString());
+                                    Log.d("fileURL", storageReference2nd.getDownloadUrl().toString());
 
                                     // Getting image upload ID.
                                     String ImageUploadId = databaseReference.push().getKey();
@@ -222,5 +224,5 @@ public class Uploads extends AppCompatActivity {
             }
 
 
-        }
+    }
 

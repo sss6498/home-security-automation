@@ -68,7 +68,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
 
                 //mAdapter.setOnItemClickListener(Pictures.this);
 
-                mProgressCircle.setVisibility(View.INVISIBLE);
+                mProgressCircle.setVisibility(View.VISIBLE);
             }
 
             @Override
