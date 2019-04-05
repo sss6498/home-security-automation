@@ -3,6 +3,7 @@ package com.example.homesecurityautomation;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -39,7 +40,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Stored_Images");
+        databaseReference = FirebaseDatabase.getInstance().getReference("All_Image_Uploads_Database");
 
         /*
         storage = FirebaseStorage.getInstance();
@@ -51,12 +52,14 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
         mProgressCircle = findViewById(R.id.progressCircle);
 
         //The following two Override methods take a DataSnapshot and iterate through the list of data in the firebase
+        Log.d("set up page", "time to get data");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Photo pic = postSnapshot.getValue(Photo.class);
                     photos.add(pic);
+                    Log.d("picture", pic.getPhotoURL());
                 }
 
                 adapter = new GridViewAdapter(Pictures.this, photos);

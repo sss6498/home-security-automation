@@ -3,7 +3,7 @@ package com.example.homesecurityautomation;
 //This class is for the photo object for pictures to be viewed
 public class Photo
 {
-    private String url;
+    private String photoURL;
     private String name;
 
     public Photo()
@@ -19,7 +19,7 @@ public class Photo
             name = "No name";
         }
         name = imagename;
-        url = imageurl;
+        photoURL = imageurl;
     }
 
     //Constructor used to create a photo object
@@ -27,19 +27,19 @@ public class Photo
     public Photo(String imageurl)
     {
         name = "";
-        url = imageurl;
+        photoURL = imageurl;
     }
 
     //Gets the photo image's url
     public String getPhotoURL()
     {
-        return url;
+        return photoURL;
     }
 
     //sets the photo images url
     public void setUrl(String imageurl)
     {
-        url = imageurl;
+        photoURL = imageurl;
     }
 
 }

@@ -54,7 +54,7 @@ public class Uploads extends AppCompatActivity {
     // Image request code for onActivityResult() .
     int Image_Request_Code = 7;
 
-    ProgressDialog progressDialog ;
+    //ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +77,7 @@ public class Uploads extends AppCompatActivity {
                 SelectImage = (ImageView)findViewById(R.id.ShowImageView);
 
                 // Assigning Id to ProgressDialog.
-                progressDialog = new ProgressDialog(activity_uploads.this);
+                //progressDialog = new ProgressDialog(activity_uploads.this);
 
                 // Adding click listener to Choose image button.
                 ChooseButton.setOnClickListener(new View.OnClickListener() {
@@ -155,10 +155,10 @@ public class Uploads extends AppCompatActivity {
                 if (FilePathUri != null) {
 
                     // Setting progressDialog Title.
-                    progressDialog.setTitle("Image is Uploading...");
+                    //progressDialog.setTitle("Image is Uploading...");
 
                     // Showing progressDialog.
-                    progressDialog.show();
+                    //progressDialog.show();
 
                     // Creating second StorageReference.
                     StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
@@ -173,7 +173,7 @@ public class Uploads extends AppCompatActivity {
                                     String TempImageName = ImageName.getText().toString().trim();
 
                                     // Hiding the progressDialog after done uploading.
-                                    progressDialog.dismiss();
+                                    //progressDialog.dismiss();
 
                                     // Showing toast message after done uploading.
                                     Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
@@ -194,7 +194,7 @@ public class Uploads extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception exception) {
 
                                     // Hiding the progressDialog.
-                                    progressDialog.dismiss();
+                                   // progressDialog.dismiss();
 
                                     // Showing exception erro message.
                                     Toast.makeText(Uploads.this, exception.getMessage(), Toast.LENGTH_LONG).show();
@@ -207,7 +207,7 @@ public class Uploads extends AppCompatActivity {
                                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
                                     // Setting progressDialog Title.
-                                    progressDialog.setTitle("Image is Uploading...");
+                                    //progressDialog.setTitle("Image is Uploading...");
 
                                 }
                             });
@@ -221,5 +221,4 @@ public class Uploads extends AppCompatActivity {
 
 
         }
-    }
-}
+

@@ -1,6 +1,7 @@
 package com.example.homesecurityautomation;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,6 @@ import java.util.List;
     }
 
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
@@ -68,7 +68,10 @@ import java.util.List;
         Glide
                 .with(mContext)
                 .load(pic.getPhotoURL())
+                .placeholder(R.mipmap.ic_launcher)
+                .centerCrop()
                 .into(holder.imageView);
+        Log.d("uploading picture", "retrieving");
 
         return row;
     }
