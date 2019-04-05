@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 //This class is for the RegisteredFaces page
-public class RegisteredFaces extends AppCompatActivity {
+public class RegisteredFaces extends AppCompatActivity implements View.OnClickListener{
 
     private Button back, addNewFace;
     //This method occurs upon loading the page
