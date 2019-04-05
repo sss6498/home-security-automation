@@ -40,7 +40,7 @@ public class RegisteredFaces extends AppCompatActivity implements View.OnClickLi
         if(view == back)
         {
             finish();
-            startActivity(new Intent(this, UserSettings.class));
+            startActivity(new Intent(this, AdminSettings.class));
         }
 
         if(view == addNewFace)

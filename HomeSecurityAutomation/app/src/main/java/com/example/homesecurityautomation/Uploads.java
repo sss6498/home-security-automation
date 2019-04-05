@@ -29,9 +29,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 
-public class Uploads extends AppCompatActivity {
+public class Uploads extends AppCompatActivity implements View.OnClickListener {
 
-
+    private Button back;
     // Folder path for Firebase Storage.
     String Storage_Path = "All_Image_Uploads/";
 
@@ -62,6 +62,9 @@ public class Uploads extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_uploads);
+
+            back = findViewById(R.id.back);
+            back.setOnClickListener(this);
 
                 // Assign FirebaseStorage instance to storageReference.
                 storageReference = FirebaseStorage.getInstance().getReference();
@@ -110,6 +113,12 @@ public class Uploads extends AppCompatActivity {
                     }
                 });
             }
+    public void onClick(View view) {
+        if (view == back) {
+            finish();
+            startActivity(new Intent(this, MainControlActivity.class));
+        }
+    }
 
             @Override
             protected void onActivityResult(int requestCode, int resultCode, Intent data) {
