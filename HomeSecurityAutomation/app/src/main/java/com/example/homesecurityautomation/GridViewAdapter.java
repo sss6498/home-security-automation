@@ -1,8 +1,6 @@
 package com.example.homesecurityautomation;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,48 +9,76 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 
 //This is an adapter class used to convert a list of photos into a format that can be displayed on the app for the user to easily view.
+    public class GridViewAdapter extends BaseAdapter {
 
-    public class CustomAdapter extends BaseAdapter{
-        private Activity mContext;
+    Context mContext;
 
-        // Keep all Images in array
-        public List<Photo> photoList;
+    // Keep all Images in array
+    public List<Photo> photoList;
 
-        // Constructor
-        public CustomAdapter(Pictures pics, List<Photo> photos) {
-            this.mContext = pics;
-            this.photoList = photos;
-        }
-
-        @Override
-        public int getCount() {
-            return photoList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return photoList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView = new ImageView(mContext);
-            //imageView.setImageResource(photoList.get(position).getPhotoURL());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setLayoutParams(new GridView.LayoutParams(70, 70));
-            return imageView;
-        }
-
+    // Constructor
+    public GridViewAdapter(Context context, List<Photo> photos) {
+        this.mContext = context;
+        this.photoList = photos;
     }
+
+
+    @Override
+    public int getCount() {
+        return photoList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return photoList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        View row = convertView;
+        ViewHolder holder = null;
+
+        if (row == null) {
+            row = LayoutInflater.from(mContext).inflate(R.layout.photo_pic, null);
+            holder = new ViewHolder();
+            holder.imageView = (ImageView) row.findViewById(R.id.imageView);
+            holder.id = photoList.get(position).getPhotoURL();
+            row.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) row.getTag();
+            holder.id = photoList.get(position).getPhotoURL();
+        }
+
+        Photo pic = photoList.get(position);
+        Glide
+                .with(mContext)
+                .load(pic.getPhotoURL())
+                .into(holder.imageView);
+
+        return row;
+    }
+    public class ViewHolder {
+        ImageView imageView;
+        public String id;
+    }
+}
+
+
 
     /*
     //constructor for adapter object

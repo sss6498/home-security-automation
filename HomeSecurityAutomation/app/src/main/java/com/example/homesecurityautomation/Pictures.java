@@ -29,7 +29,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
     private GridView gridview;
     private Button back;
     List<Photo> photos;
-    CustomAdapter adapter;
+    GridViewAdapter adapter;
     private ProgressBar mProgressCircle;
 
 
@@ -59,7 +59,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
                     photos.add(pic);
                 }
 
-                adapter = new CustomAdapter(Pictures.this, photos);
+                adapter = new GridViewAdapter(Pictures.this, photos);
 
                 gridview.setAdapter(adapter);
 
