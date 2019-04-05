@@ -2,6 +2,7 @@ package com.example.homesecurityautomation;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,11 +29,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
 //This class in the main control activity for the user. It allows the user to control the lights, alarm, and other features of the system. The class also helps the user navigate to the other features.
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
+
+    //Rasberry pi connection
+    Socket myAppSocket = null;
+    String txtAddress;
+    public static String wifiModuleIp = "";
+    public static int wifiModulePort = 0;
+    public static String CMD = "0";
+
+
 
     private Button LogoutButton;
     private FirebaseAuth firebaseAuth;
@@ -231,5 +246,46 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         MyRequestQueue.add(MyStringRequest);
     }
 
+    public void getIPandPort()
+    {
+        String iPandPort = txtAddress;
+        Log.d("MYTEST" , "IP STRING: " + iPandPort);
+        String temp[] = iPandPort.split(":");
+        wifiModuleIp = temp[0];
+        wifiModulePort = Integer.valueOf(temp[1]);
+        Log.d("MYTEST" , "IP: " + wifiModuleIp);
+        Log.d("MYTEST" , "Port: " + wifiModulePort);
 
+
+    }
+
+    public class Socket_AsyncTask extends AsyncTask<Void, Void, Void>
+    {
+        Socket socket;
+
+        @Override
+        protected Void doInBackground(Void... params){
+            try{
+                InetAddress inetAddress = InetAddress.getByName(MainControlActivity.wifiModuleIp);
+                socket = new java.net.Socket(inetAddress, MainControlActivity.wifiModulePort);
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                dataOutputStream.writeBytes(CMD);
+                dataOutputStream.close();
+                socket.close();
+            }
+            catch (UnknownHostException e)
+            {
+                e.printStackTrace();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }
+
+
+
+
