@@ -29,6 +29,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 
 public class Uploads extends AppCompatActivity {
+
+
     // Folder path for Firebase Storage.
     String Storage_Path = "All_Image_Uploads/";
 

@@ -49,4 +49,24 @@
         android:layout_marginTop="20dp"
         android:text="Upload image to Firebase Storage"/>
 
+    <Button
+        android:id="@+id/back"
+        android:layout_width="79dp"
+        android:layout_height="41dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="638dp"
+        android:layout_marginEnd="286dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/back_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.967" />
+
 </RelativeLayout>
