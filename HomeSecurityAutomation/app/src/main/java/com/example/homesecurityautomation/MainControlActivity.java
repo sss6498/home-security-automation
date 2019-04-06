@@ -42,6 +42,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
     //Rasberry pi connection
     Socket myAppSocket = null;
+    //SET THE IP ADDRESS INTO THIS STRING VARIABLE BELOW
     String txtAddress;
     public static String wifiModuleIp = "";
     public static int wifiModulePort = 0;
@@ -184,9 +185,17 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == lightSwitch)
         {
-            if(userP.getLights())
+            String action = "";
+            if(userP.getLights() && lightSwitch.isChecked())
             {
-                turnLightsOn();
+                action = "ON";
+                turnLights(action);
+                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+            }
+            else if(userP.getLights() && !lightSwitch.isChecked())
+            {
+                action = "OFF";
+                turnLights(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
             else{
@@ -220,30 +229,13 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     }
 
     //This method is used to send an http request to the server to turn on the lights.
-    public void turnLightsOn()
+    public void turnLights(String action)
     {
-        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
+        getIPandPort();
+        CMD = action;
+        Socket_AsyncTask cmd_action = new Socket_AsyncTask();
+        cmd_action.execute();
 
-        String url = "http://172.20.10.5";
-        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-            }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put("lights", "ON"); //Add the data you'd like to send to the server.
-                return MyData;
-            }
-        };
-        MyRequestQueue.add(MyStringRequest);
     }
 
     public void getIPandPort()
