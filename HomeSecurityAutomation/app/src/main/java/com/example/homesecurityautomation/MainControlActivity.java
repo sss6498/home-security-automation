@@ -167,8 +167,16 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
         if(view == settings)
         {
-            finish();
-            startActivity(new Intent(this, AdminSettings.class));
+            if(userP.getAdmin()) {
+                finish();
+                startActivity(new Intent(this, AdminSettings.class));
+            }
+            else
+            {
+                finish();
+                startActivity(new Intent(this, UserSettings.class));
+
+            }
         }
         if(view == call)
         {
