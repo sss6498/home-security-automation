@@ -43,7 +43,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     //Rasberry pi connection
     Socket myAppSocket = null;
     //SET THE IP ADDRESS INTO THIS STRING VARIABLE BELOW
-    String txtAddress;
+    String txtAddress= "192.168.23.150:8080";
     public static String wifiModuleIp = "";
     public static int wifiModulePort = 0;
     public static String CMD = "0";
@@ -242,7 +242,9 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         getIPandPort();
         CMD = action;
         Socket_AsyncTask cmd_action = new Socket_AsyncTask();
+        Log.d("create socket", "socket");
         cmd_action.execute();
+        Log.d("Execute socket", "execute");
 
     }
 
@@ -252,7 +254,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         Log.d("MYTEST" , "IP STRING: " + iPandPort);
         String temp[] = iPandPort.split(":");
         wifiModuleIp = temp[0];
-        wifiModulePort = Integer.valueOf(temp[1]);
+        wifiModulePort = Integer.parseInt(temp[1]);
         Log.d("MYTEST" , "IP: " + wifiModuleIp);
         Log.d("MYTEST" , "Port: " + wifiModulePort);
 
@@ -266,10 +268,22 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected Void doInBackground(Void... params){
             try{
+                Log.d("IN TRY", "TRYING");
                 InetAddress inetAddress = InetAddress.getByName(MainControlActivity.wifiModuleIp);
-                socket = new java.net.Socket(inetAddress, MainControlActivity.wifiModulePort);
+                Log.d("IP ADDRESS: ", inetAddress.getHostAddress());
+                Log.d("PORT ADDRESS: ",MainControlActivity.wifiModulePort+"");
+                socket = new Socket(inetAddress, MainControlActivity.wifiModulePort);
+                Log.d("PORT ADDRESS: ","ports");
+                if (socket.getInetAddress().isReachable(100))
+                {
+                    Log.d("CONNECTED", "No Error");
+                }
+                else{
+                    Log.d("Failed connection", "ERROR");
+                }
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                 dataOutputStream.writeBytes(CMD);
+                dataOutputStream.flush();
                 dataOutputStream.close();
                 socket.close();
             }
