@@ -107,6 +107,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     private boolean isFront = true;
+    private int numPics = 0;
 
     //private static String Rotate = null;
     //ImageView RotateFront;
@@ -144,6 +145,22 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         }
         if (view == takePictureButton) {
             takePicture();
+            numPics++;
+            int remaining = 7 - numPics;
+            if(remaining == 0)
+            {
+                String toastOut = "Successfully registered face";
+                Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
+                numPics = 0;
+                finish();
+                startActivity(new Intent(this, RegisteredFaces.class));
+
+            }
+            else
+            {
+                String toastOut = "Please take " + remaining + " more photos";
+                Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
+            }
         }
         if(view == rotate)
         {
@@ -248,7 +265,11 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
+
+            ///////////
+            String fileName = "/pic" + numPics + ".jpg";
+            //////////
+            final File file = new File(Environment.getExternalStorageDirectory()+fileName);
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
