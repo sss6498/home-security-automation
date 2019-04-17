@@ -34,13 +34,14 @@ import java.net.UnknownHostException;
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Rasberry pi connection
-    Socket myAppSocket = null;
+    Socket_AsyncTask myAppSocket = null;
     //SET THE IP ADDRESS INTO THIS STRING VARIABLE BELOW
-    String txtAddress= "192.168.23.150:8080";
+    /*
+    String txtAddress= "192.168.30.70:9090";
     public static String wifiModuleIp = "";
     public static int wifiModulePort = 0;
     public static String CMD = "0";
-
+*/
 
 
     private Button LogoutButton;
@@ -65,6 +66,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+        myAppSocket = new Socket_AsyncTask();
+        myAppSocket.execute();
 
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -232,15 +235,16 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     //This method is used to send an http request to the server to turn on the lights.
     public void turnLights(String action)
     {
-        getIPandPort();
-        CMD = action;
-        Socket_AsyncTask cmd_action = new Socket_AsyncTask();
-        Log.d("create socket", "socket");
-        cmd_action.execute();
-        Log.d("Execute socket", "execute");
+        //myAppSocket.getIPandPort();
+
+        //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
+        //Log.d("create socket", "socket");
+        myAppSocket.SendMessage(action);
+        //Log.d("Execute socket", "execute");
 
     }
 
+    /*
     public void getIPandPort()
     {
         String iPandPort = txtAddress;
@@ -251,8 +255,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         Log.d("MYTEST" , "IP: " + wifiModuleIp);
         Log.d("MYTEST" , "Port: " + wifiModulePort);
 
-
     }
+
 
     public class Socket_AsyncTask extends AsyncTask<Void, Void, Void>
     {
@@ -267,7 +271,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 Log.d("PORT ADDRESS: ",MainControlActivity.wifiModulePort+"");
                 socket = new Socket(inetAddress, MainControlActivity.wifiModulePort);
                 Log.d("PORT ADDRESS: ","ports");
-                if (socket.getInetAddress().isReachable(100))
+                if (socket.getInetAddress().isReachable(1000))
                 {
                     Log.d("CONNECTED", "No Error");
                 }
@@ -291,6 +295,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             return null;
         }
     }
+    */
 }
 
 
