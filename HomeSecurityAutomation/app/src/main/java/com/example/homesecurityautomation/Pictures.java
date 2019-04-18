@@ -35,6 +35,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
 
 
 
+
     //This method occurs when the page is first loaded
     @Override
     protected void onCreate(Bundle savedInstanceState) {

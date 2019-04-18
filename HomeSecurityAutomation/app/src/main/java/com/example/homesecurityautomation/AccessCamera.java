@@ -15,6 +15,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
     private ImageView mainPic;
     private ImageButton back, gallery;
     private Button takePic, call;
+    String action = "";
 
     //This method loads up the buttons and onclicklisteners as soon as the page is first loaded
     @Override
@@ -63,6 +64,12 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     public void TakePicture()
     {
+        action = "TAKEPIC";
+        Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
+        //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
+        //Log.d("create socket", "socket");
+        myAppSocket.setMessage(action);
+        myAppSocket.execute();
 
     }
 }

@@ -53,6 +53,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     private ToggleButton homeButton, awayButton, offButton;
     DatabaseReference databaseReference;
     User userP;
+    String action = "";
 
     //This method sets up the MainControlActivity page by initializing the UI elements and setting up the features for the user to interact with.
     @Override
@@ -189,17 +190,17 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == lightSwitch)
         {
-            String action = "";
+
             if(userP.getLights() && lightSwitch.isChecked())
             {
                 action = "ON";
-                turnLights(action);
+                ExecuteAction(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
             else if(userP.getLights() && !lightSwitch.isChecked())
             {
                 action = "OFF";
-                turnLights(action);
+                ExecuteAction(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
             else{
@@ -215,10 +216,14 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 if(alarmSwitch.isChecked())
                 {
                     Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
+                    action = "ARMED";
+                    ExecuteAction(action);
                 }
                 else if(alarmSwitch.isChecked())
                 {
                     Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
+                    action = "DISARMED";
+                    ExecuteAction(action);
                 }
             }
             else{
@@ -233,7 +238,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     }
 
     //This method is used to send an http request to the server to turn on the lights.
-    public void turnLights(String action)
+    public void ExecuteAction(String action)
     {
         //myAppSocket.getIPandPort();
         Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
