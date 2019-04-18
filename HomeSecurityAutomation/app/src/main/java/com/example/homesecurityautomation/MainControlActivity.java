@@ -34,7 +34,7 @@ import java.net.UnknownHostException;
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Rasberry pi connection
-    Socket_AsyncTask myAppSocket = null;
+//    Socket_AsyncTask myAppSocket = null;
     //SET THE IP ADDRESS INTO THIS STRING VARIABLE BELOW
     /*
     String txtAddress= "192.168.30.70:9090";
@@ -66,8 +66,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-        myAppSocket = new Socket_AsyncTask();
-        myAppSocket.execute();
+//        myAppSocket = new Socket_AsyncTask();
+        //myAppSocket.execute();
 
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -236,10 +236,12 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     public void turnLights(String action)
     {
         //myAppSocket.getIPandPort();
-
+        Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
         //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
         //Log.d("create socket", "socket");
-        myAppSocket.SendMessage(action);
+        myAppSocket.setMessage(action);
+        myAppSocket.execute();
+
         //Log.d("Execute socket", "execute");
 
     }

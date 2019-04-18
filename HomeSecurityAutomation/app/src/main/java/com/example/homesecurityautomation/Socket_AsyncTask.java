@@ -3,10 +3,15 @@ package com.example.homesecurityautomation;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
  public class Socket_AsyncTask extends AsyncTask<Void, Void, Void>
@@ -31,13 +36,23 @@ import java.net.UnknownHostException;
 
         }
 
+        public void setMessage(String message)
+        {
+            CMD = message;
+        }
+
         public void SendMessage(String message) {
+
+            String response = null;
             CMD = message;
             try {
-                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                dataOutputStream.writeBytes(CMD);
-                dataOutputStream.flush();
-                dataOutputStream.close();
+                    //read response from server.
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    PrintWriter out = new PrintWriter(socket.getOutputStream());
+
+                    out.write(CMD);
+                    out.flush();
+                    response = in.readLine();
             }
             catch (UnknownHostException e)
             {
@@ -52,17 +67,18 @@ import java.net.UnknownHostException;
         }
 
 
-
         @Override
         protected Void doInBackground(Void... params){
             try{
-                Log.d("IN TRY", "TRYING");
+                //Log.d("IN TRY", "TRYING");
                 getIPandPort();
                 InetAddress inetAddress = InetAddress.getByName(wifiModuleIp);
-                Log.d("IP ADDRESS: ", inetAddress.getHostAddress());
-                Log.d("PORT ADDRESS: ",wifiModulePort+"");
-                socket = new Socket(inetAddress,wifiModulePort);
-                Log.d("PORT ADDRESS: ","ports");
+                //Log.d("IP ADDRESS: ", inetAddress.getHostAddress());
+                //Log.d("PORT ADDRESS: ",wifiModulePort+"");
+                socket = new Socket(inetAddress, wifiModulePort);
+                SocketAddress localaddr = new InetSocketAddress(inetAddress, wifiModulePort);
+                //socket.bind(localaddr);
+                //Log.d("PORT ADDRESS: ","ports");
                 if (socket.getInetAddress().isReachable(1000))
                 {
                     Log.d("CONNECTED", "No Error");
@@ -70,11 +86,27 @@ import java.net.UnknownHostException;
                 else{
                     Log.d("Failed connection", "ERROR");
                 }
+
+                //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+
+                if(!CMD.equals("0")) {
+                    PrintWriter out = new PrintWriter(socket.getOutputStream());
+
+                    out.write(CMD);
+                    Log.d("MESSAGE", CMD);
+                    CMD = "0";
+                    out.flush();
+                    out.close();
+                }
+                socket.close();
+                /*
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                dataOutputStream.writeBytes(CMD);
+                dataOutputStream.writeBytes("ON");
                 dataOutputStream.flush();
                 dataOutputStream.close();
-                socket.close();
+                */
+
             }
             catch (UnknownHostException e)
             {
