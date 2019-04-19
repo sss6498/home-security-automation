@@ -2,7 +2,6 @@ package com.example.homesecurityautomation;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,9 +24,9 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
 
     private Button NewUserButton, FaceRecButton, back, deleteUser;
     private Switch EnableLight, EnableCamera, EnableAlarm;
-    private Switch enableL, enableC, enableA;
     private TableLayout table;
     String action = "";
+    FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
     List<User> userList;
 
@@ -38,9 +38,9 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
 
         NewUserButton = findViewById(R.id.NewUserButton);
         FaceRecButton = findViewById(R.id.FaceRecButton);
-        enableL = findViewById(R.id.EnableLight);
-        enableC = findViewById(R.id.EnableCamera);
-        enableA = findViewById(R.id.EnableAlarm);
+        EnableLight = findViewById(R.id.EnableLight);
+        EnableCamera = findViewById(R.id.EnableCamera);
+        EnableAlarm = findViewById(R.id.EnableAlarm);
         back = findViewById(R.id.back);
         table = findViewById(R.id.table);
         deleteUser = findViewById(R.id.deleteUser);
@@ -71,9 +71,9 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         FaceRecButton.setOnClickListener(this);
         NewUserButton.setOnClickListener(this);
         deleteUser.setOnClickListener(this);
-        enableL.setOnClickListener(this);
-        enableC.setOnClickListener(this);
-        enableA.setOnClickListener(this);
+        EnableLight.setOnClickListener(this);
+        EnableCamera.setOnClickListener(this);
+        EnableAlarm.setOnClickListener(this);
 
     }
 
@@ -103,39 +103,72 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
             finish();
             startActivity(new Intent(this, DeleteUser.class));
         }
-        if(view == enableL)
+        if(view == EnableLight)
         {
-            if(enableL.isChecked())
+            if(EnableLight.isChecked())
             {
-                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+                Log.d("Inside on switch", "ON");
+                databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+                databaseReference.child("lights").setValue(true);
+                Toast.makeText(AdminSettings.this, "Admin Lights off", Toast.LENGTH_SHORT).show();
             }
-            if(!enableL.isChecked())
+            if(!EnableLight.isChecked())
             {
-
+                Log.d("Inside off switch", "OFF");
+                databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+                databaseReference.child("lights").setValue(false);
+                Toast.makeText(AdminSettings.this, "Admin Lights off", Toast.LENGTH_SHORT).show();
             }
         }
-        if(view == enableC)
+        if(view == EnableCamera)
         {
-
+            if(EnableCamera.isChecked())
+            {
+                Log.d("Inside on switch", "ON");
+                databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+                databaseReference.child("camera").setValue(true);
+                Toast.makeText(AdminSettings.this, "Admin Camera off", Toast.LENGTH_SHORT).show();
+            }
+            if(!EnableCamera.isChecked())
+            {
+                Log.d("Inside off switch", "OFF");
+                databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+                databaseReference.child("camera").setValue(false);
+                Toast.makeText(AdminSettings.this, "Admin Camera off", Toast.LENGTH_SHORT).show();
+            }
         }
-        if(view == enableA)
+        if(view == EnableAlarm)
         {
-
+            if(EnableAlarm.isChecked())
+            {
+                Log.d("Inside on switch", "ON");
+                databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+                databaseReference.child("alarm").setValue(true);
+                Toast.makeText(AdminSettings.this, "Admin Alarm off", Toast.LENGTH_SHORT).show();
+            }
+            if(!EnableAlarm.isChecked())
+            {
+                Log.d("Inside off switch", "OFF");
+                databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+                databaseReference.child("alarm").setValue(false);
+                Toast.makeText(AdminSettings.this, "Admin Alarm off", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    public void ChangeVals(int device, boolean status, ArrayList<User> AllUsers)
+    /*public void ChangeVals(int device, boolean status, ArrayList<User> AllUsers)
     {
         //0 Light, 1 Camera, 2 Alarm
         //0 off, 1 on
         String component = "lights";
         for(User user: AllUsers)
         {
-            //databaseReference = FirebaseDatabase.getInstance().getReference("users");
-            //databaseReference.child(user.getUsername()).child(component).setValue(false);
+            databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+            databaseReference.child("lights").setValue(false);
+            Toast.makeText(NewUserSetup.this, "Admin Lights off", Toast.LENGTH_SHORT).show();
         }
 
-    }
+    } */
 
 
 

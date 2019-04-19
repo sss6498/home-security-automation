@@ -61,7 +61,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Switch
-        android:id="@+id/EnableLight"
+        android:id="@+id/EnableAlarm"
         android:layout_width="153dp"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
@@ -95,7 +95,7 @@
         app:layout_constraintVertical_bias="0.62" />
 
     <Switch
-        android:id="@+id/EnableAlarm"
+        android:id="@+id/EnableLight"
         android:layout_width="153dp"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
