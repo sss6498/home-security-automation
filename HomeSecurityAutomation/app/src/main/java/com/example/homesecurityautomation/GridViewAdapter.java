@@ -56,6 +56,9 @@ import java.util.List;
             row = LayoutInflater.from(mContext).inflate(R.layout.photo_pic, null);
             holder = new ViewHolder();
             holder.imageView = (ImageView) row.findViewById(R.id.imageView);
+            //holder.imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            holder.imageView.setPadding(5,5,5,5);
+            holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             holder.id = photoList.get(position).getPhotoURL();
             row.setTag(holder);
         }
