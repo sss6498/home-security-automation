@@ -70,6 +70,10 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         //Log.d("create socket", "socket");
         myAppSocket.setMessage(action);
         myAppSocket.execute();
+        LoadPic();
+    }
 
+    public void LoadPic(){
+        
     }
 }
