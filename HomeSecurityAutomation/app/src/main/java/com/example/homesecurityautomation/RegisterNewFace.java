@@ -10,6 +10,7 @@ import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Debug;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.ActivityCompat;
@@ -149,7 +150,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         retake = findViewById(R.id.retakeButton);
         retake.setOnClickListener(this);
         addFace = findViewById(R.id.addFaceButton);
-        addface.setOnClickListener(this);
+        addFace.setOnClickListener(this);
         headShots = new ArrayList<>();
         files = new ArrayList<>();
 
@@ -174,10 +175,10 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(this, RegisteredFaces.class));
         }
         if (view == takePictureButton) {
-           if(numPics != 7) {
+           if(numPics != 3) {
                takePicture();
                numPics++;
-               int remaining = 7 - numPics;
+               int remaining = 3 - numPics;
                if (remaining == 0) {
                    String toastOut = "Max Pictures Taken";
                    Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
@@ -221,7 +222,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         }
         if(view == addFace)
         {
-            if(numPics == 7)
+            if(numPics == 3)
             {
                 if(personName.getText().toString() == null)
                 {
@@ -230,7 +231,8 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
                 }
                 for(int j = 0; j <headShots.size(); j++)
                 {
-                    UploadImageFileToFirebaseStorage(headShots.get(j), personName.getText().toString());
+                    UploadImageFileToFirebaseStorage(headShots.get(j), personName.getText().toString() + (j+1));
+                    Log.d("here: ", personName.getText().toString() + (j+1));
                 }
 
 

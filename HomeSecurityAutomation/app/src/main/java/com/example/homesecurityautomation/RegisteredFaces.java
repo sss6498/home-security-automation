@@ -48,7 +48,7 @@ public class RegisteredFaces extends AppCompatActivity implements View.OnClickLi
 
         back.setOnClickListener(this);
         addNewFace.setOnClickListener(this);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Faces_Database");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Faces_Image_Uploads_Database");
 
         /*
         storage = FirebaseStorage.getInstance();
