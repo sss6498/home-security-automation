@@ -1,11 +1,16 @@
 package com.example.homesecurityautomation;
 
+import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.Manifest;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -14,7 +19,9 @@ import android.view.View;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -61,11 +68,17 @@ import java.util.List;
 //
 
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +91,11 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
 
     //The following two lines setup the objects that will be used later
     private Button addFace, back, retakeButton;
-    DatabaseReference databaseReference;
+    // Folder path for Firebase Storage.
+    String Storage_Path = "Face_Image_Uploads/";
+
+    // Root Database Name for Firebase Database.
+    String Database_Path = "Face_Image_Uploads_Database";
     //Camera camera;
     //SurfaceView surfaceView;
     //SurfaceHolder surfaceHolder;
@@ -108,6 +125,10 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     private HandlerThread mBackgroundThread;
     private boolean isFront = true;
     private int numPics = 0;
+    private EditText personName;
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
+
 
     //private static String Rotate = null;
     //ImageView RotateFront;
@@ -119,9 +140,11 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_new_face);
         back = findViewById(R.id.back);
+        personName = findViewById(R.id.personName);
         back.setOnClickListener(this);
         rotate = findViewById(R.id.rotate);
         rotate.setOnClickListener(this);
+
 
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
@@ -152,8 +175,14 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
                 String toastOut = "Successfully registered face";
                 Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
                 numPics = 0;
-                finish();
-                startActivity(new Intent(this, RegisteredFaces.class));
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
+                //photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE);
+                //startActivity(new Intent(this, RegisteredFaces.class));
 
             }
             else
@@ -447,4 +476,136 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         stopBackgroundThread();
         super.onPause();
     }
+
+    public String GetFileExtension(Uri uri) {
+
+        ContentResolver contentResolver = getContentResolver();
+
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        // Returning the file Extension.
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            List<Uri> picList = new ArrayList<>();
+            ClipData clipData = data.getClipData();
+
+            for(int i = 0; i < clipData.getItemCount(); i++)
+            {
+                picList.add((Uri) clipData.getItemAt(i).getUri());
+            }
+
+            try {
+                if(personName.getText().toString() == null)
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter a Name in the field ", Toast.LENGTH_LONG).show();
+                }
+                for(int j = 0; j <picList.size(); j++) {
+                    UploadImageFileToFirebaseStorage(picList.get(j), personName.getText().toString());
+                }
+
+
+
+            }
+            catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void UploadImageFileToFirebaseStorage(Uri FilePathUri, String ImageName) {
+
+        // Checking whether FilePathUri Is empty or not.
+        if (FilePathUri != null) {
+            // Assign FirebaseStorage instance to storageReference.
+            storageReference = FirebaseStorage.getInstance().getReference();
+
+            // Assign FirebaseDatabase instance with root database name.
+            databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
+
+            // Setting progressDialog Title.
+            //progressDialog.setTitle("Image is Uploading...");
+
+            // Showing progressDialog.
+            //progressDialog.show();
+
+            // Creating second StorageReference.
+            final String name = ImageName;
+            final StorageReference storageReference2nd = storageReference.child(Storage_Path + ImageName + "." + GetFileExtension(FilePathUri));
+
+            // Adding addOnSuccessListener to second StorageReference.
+            storageReference2nd.putFile(FilePathUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            // Getting image name from EditText and store into string variable.
+                            String TempImageName = name.trim();
+
+                            // Hiding the progressDialog after done uploading.
+                            //progressDialog.dismiss();
+
+                            // Showing toast message after done uploading.
+                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+
+                            //@SuppressWarnings("VisibleForTests")
+                            //Photo imageUploadInfo = new Photo(storageReference2nd.getDownloadUrl().toString());
+                            storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Photo imageUploadInfo = new Photo(uri.toString());
+                                    Log.d("FilePath", "onSuccess: uri= "+ uri.toString());
+                                    // Getting image upload ID.
+                                    String ImageUploadId = databaseReference.push().getKey();
+
+                                    // Adding image upload id s child element into databaseReference.
+                                    databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                                }
+                            });
+                            //Log.d("fileURL", storageReference2nd.getDownloadUrl().toString());
+
+
+                        }
+                    })
+                    // If something goes wrong .
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+
+                            // Hiding the progressDialog.
+                            // progressDialog.dismiss();
+
+                            // Showing exception erro message.
+                            //Toast.makeText(Uploads.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    })
+
+                    // On progress change upload time.
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            // Setting progressDialog Title.
+                            //progressDialog.setTitle("Image is Uploading...");
+
+                        }
+                    });
+        }
+        else {
+
+            //Toast.makeText(Uploads.this, "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+
 }
