@@ -175,10 +175,10 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(this, RegisteredFaces.class));
         }
         if (view == takePictureButton) {
-           if(numPics != 3) {
+           if(numPics != 7) {
                takePicture();
                numPics++;
-               int remaining = 3 - numPics;
+               int remaining = 7 - numPics;
                if (remaining == 0) {
                    String toastOut = "Max Pictures Taken";
                    Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
@@ -222,7 +222,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         }
         if(view == addFace)
         {
-            if(numPics == 3)
+            if(numPics == 7)
             {
                 if(personName.getText().toString() == null)
                 {
