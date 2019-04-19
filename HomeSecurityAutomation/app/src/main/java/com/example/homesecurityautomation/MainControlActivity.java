@@ -33,24 +33,12 @@ import java.net.UnknownHostException;
 //This class in the main control activity for the user. It allows the user to control the lights, alarm, and other features of the system. The class also helps the user navigate to the other features.
 public class MainControlActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //Rasberry pi connection
-//    Socket_AsyncTask myAppSocket = null;
-    //SET THE IP ADDRESS INTO THIS STRING VARIABLE BELOW
-    /*
-    String txtAddress= "192.168.30.70:9090";
-    public static String wifiModuleIp = "";
-    public static int wifiModulePort = 0;
-    public static String CMD = "0";
-*/
-
-
-    private Button LogoutButton;
     private FirebaseAuth firebaseAuth;
     private TextView textViewWelcome;
-    private Button camera, call, uploadButton;
+    private Button camera, call, uploadButton, lightON, alarmON, lightOFF, alarmOFF, LogoutButton;
     private ImageButton settings;
-    private Switch lightSwitch, alarmSwitch;
-    private ToggleButton homeButton, awayButton, offButton;
+    //private Switch lightSwitch, alarmSwitch;
+    private Button homeButton, awayButton, offButton;
     DatabaseReference databaseReference;
     User userP;
     String action = "";
@@ -98,8 +86,12 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         LogoutButton = findViewById(R.id.LogoutButton);
         camera = findViewById(R.id.camera);
         call = findViewById(R.id.call);
-        lightSwitch = findViewById(R.id.lightSwitch);
-        alarmSwitch = findViewById(R.id.alarmSwitch);
+        lightON = findViewById(R.id.lightON);
+        lightOFF = findViewById(R.id.lightOFF);
+        alarmON = findViewById(R.id.alarmON);
+        alarmOFF = findViewById(R.id.alarmOFF);
+        //lightSwitch = findViewById(R.id.lightSwitch);
+        //alarmSwitch = findViewById(R.id.alarmSwitch);
         homeButton = findViewById(R.id.homeButton);
         awayButton = findViewById(R.id.awayButton);
         offButton = findViewById(R.id.offButton);
@@ -137,7 +129,10 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         camera.setOnClickListener(this);
         settings.setOnClickListener(this);
         call.setOnClickListener(this);
-        lightSwitch.setOnClickListener(this);
+        lightON.setOnClickListener(this);
+        lightOFF.setOnClickListener(this);
+        alarmON.setOnClickListener(this);
+        alarmOFF.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
     }
 
@@ -188,50 +183,63 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             }
             return;
         }
-        if(view == lightSwitch)
+        if(view == lightON)
         {
 
-            if(userP.getLights() && lightSwitch.isChecked())
+            if(userP.getLights())
             {
                 action = "ON";
                 ExecuteAction(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
-            else if(userP.getLights() && !lightSwitch.isChecked())
+
+            else{
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if(view == lightOFF)
+        {
+            if(userP.getLights())
             {
                 action = "OFF";
                 ExecuteAction(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
             else{
-                lightSwitch.toggle();
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
             }
             return;
+
         }
-        if(view == alarmSwitch)
+        if(view == alarmON)
         {
             if(userP.getAlarm())
             {
-                if(alarmSwitch.isChecked())
-                {
-                    Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
-                    action = "ARMED";
-                    ExecuteAction(action);
-                }
-                else if(alarmSwitch.isChecked())
-                {
-                    Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
-                    action = "DISARMED";
-                    ExecuteAction(action);
-                }
+                Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
+                action = "ARMED";
+                ExecuteAction(action);
             }
             else{
-                alarmSwitch.toggle();
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
             }
             return;
         }
+        if(view == alarmOFF)
+        {
+            if(userP.getAlarm())
+            {
+                Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
+                action = "DISARMED";
+                ExecuteAction(action);
+            }
+            else{
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
+
+        }
+
 
 
 
