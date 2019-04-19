@@ -26,7 +26,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     private Switch EnableLight, EnableCamera, EnableAlarm;
     private Switch enableL, enableC, enableA;
     private TableLayout table;
-    String action = "":
+    String action = "";
     DatabaseReference databaseReference;
     List<User> userList;
 
@@ -128,9 +128,11 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     {
         //0 Light, 1 Camera, 2 Alarm
         //0 off, 1 on
+        String component = "lights";
         for(User user: AllUsers)
         {
-            System.out.println("Yes");
+            //databaseReference = FirebaseDatabase.getInstance().getReference("users");
+            //databaseReference.child(user.getUsername()).child(component).setValue(false);
         }
 
     }
@@ -140,7 +142,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     public ArrayList<User> getEnableVal()
     {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        ArrayList<User> AllUsers = new ArrayList<User>();
+        final ArrayList<User> AllUsers = new ArrayList<User>();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
