@@ -101,7 +101,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     //SurfaceHolder surfaceHolder;
 
     private static final String TAG = "AndroidCameraApi";
-    private Button takePictureButton;
+    private Button takePictureButton, retake, addface;
     private TextureView textureView;
     private Button rotate;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -128,6 +128,8 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     private EditText personName;
     StorageReference storageReference;
     DatabaseReference databaseReference;
+    List<Uri> headShots;
+    List<File> files;
 
 
     //private static String Rotate = null;
@@ -144,7 +146,12 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
         back.setOnClickListener(this);
         rotate = findViewById(R.id.rotate);
         rotate.setOnClickListener(this);
-
+        retake = findViewById(R.id.retakeButton);
+        retake.setOnClickListener(this);
+        addFace = findViewById(R.id.addFaceButton);
+        addface.setOnClickListener(this);
+        headShots = new ArrayList<>();
+        files = new ArrayList<>();
 
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
@@ -167,29 +174,30 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(this, RegisteredFaces.class));
         }
         if (view == takePictureButton) {
-            takePicture();
-            numPics++;
-            int remaining = 7 - numPics;
-            if(remaining == 0)
-            {
-                String toastOut = "Successfully registered face";
-                Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
-                numPics = 0;
-
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
-                //photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE);
-                //startActivity(new Intent(this, RegisteredFaces.class));
-
-            }
-            else
-            {
-                String toastOut = "Please take " + remaining + " more photos";
-                Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
-            }
+           if(numPics != 7) {
+               takePicture();
+               numPics++;
+               int remaining = 7 - numPics;
+               if (remaining == 0) {
+                   String toastOut = "Max Pictures Taken";
+                   Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
+                   //numPics = 0;
+//
+//                   Intent intent = new Intent();
+//                   intent.setType("image/*");
+//                   intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                   intent.setAction(Intent.ACTION_GET_CONTENT);
+//                   startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                   //photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE);
+                   //startActivity(new Intent(this, RegisteredFaces.class));
+               } else {
+                   String toastOut = "Please take " + remaining + " more photos";
+                   Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
+               }
+           }
+           else{
+               Toast.makeText(this, "Enough Pictures taken. Press Retake to redo or Add Face to submit.", Toast.LENGTH_SHORT).show();
+               }
         }
         if(view == rotate)
         {
@@ -203,6 +211,34 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             {
                 openCamera();
                 isFront = true;
+            }
+        }
+        if(view == retake)
+        {
+            numPics = 0;
+            files = new ArrayList<>();
+            headShots = new ArrayList<>();
+        }
+        if(view == addFace)
+        {
+            if(numPics == 7)
+            {
+                if(personName.getText().toString() == null)
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter a Name in the field ", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                for(int j = 0; j <headShots.size(); j++)
+                {
+                    UploadImageFileToFirebaseStorage(headShots.get(j), personName.getText().toString());
+                }
+
+
+            }
+
+            else{
+                String toastOut = "Please take more pictures first";
+                Toast.makeText(this, toastOut, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -299,6 +335,8 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             String fileName = "/pic" + numPics + ".jpg";
             //////////
             final File file = new File(Environment.getExternalStorageDirectory()+fileName);
+            files.add(file);
+            headShots.add(Uri.fromFile(file));
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -488,6 +526,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
 
     }
 
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -521,6 +560,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
             }
         }
     }
+    */
 
     public void UploadImageFileToFirebaseStorage(Uri FilePathUri, String ImageName) {
 
@@ -609,3 +649,4 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
 
 
 }
+
