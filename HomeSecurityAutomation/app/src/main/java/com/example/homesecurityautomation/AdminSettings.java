@@ -8,11 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +23,10 @@ import java.util.List;
 public class AdminSettings extends AppCompatActivity implements View.OnClickListener {
 
     private Button NewUserButton, FaceRecButton, back, deleteUser;
+    private Switch EnableLight, EnableCamera, EnableAlarm;
+    private Switch enableL, enableC, enableA;
     private TableLayout table;
+    String action = "":
     DatabaseReference databaseReference;
     List<User> userList;
 
@@ -39,6 +38,9 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
 
         NewUserButton = findViewById(R.id.NewUserButton);
         FaceRecButton = findViewById(R.id.FaceRecButton);
+        enableL = findViewById(R.id.EnableLight);
+        enableC = findViewById(R.id.EnableCamera);
+        enableA = findViewById(R.id.EnableAlarm);
         back = findViewById(R.id.back);
         table = findViewById(R.id.table);
         deleteUser = findViewById(R.id.deleteUser);
@@ -69,7 +71,9 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         FaceRecButton.setOnClickListener(this);
         NewUserButton.setOnClickListener(this);
         deleteUser.setOnClickListener(this);
-
+        enableL.setOnClickListener(this);
+        enableC.setOnClickListener(this);
+        enableA.setOnClickListener(this);
 
     }
 
@@ -99,8 +103,63 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
             finish();
             startActivity(new Intent(this, DeleteUser.class));
         }
+        if(view == enableL)
+        {
+            if(enableL.isChecked())
+            {
+                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+            }
+            if(!enableL.isChecked())
+            {
+
+            }
+        }
+        if(view == enableC)
+        {
+
+        }
+        if(view == enableA)
+        {
+
+        }
+    }
+
+    public void ChangeVals(int device, boolean status, ArrayList<User> AllUsers)
+    {
+        //0 Light, 1 Camera, 2 Alarm
+        //0 off, 1 on
+        for(User user: AllUsers)
+        {
+            System.out.println("Yes");
+        }
+
+    }
 
 
+
+    public ArrayList<User> getEnableVal()
+    {
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        ArrayList<User> AllUsers = new ArrayList<User>();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    User user = postSnapshot.getValue(User.class);
+                    Log.d("user adding", user.getUsername());
+
+                    AllUsers.add(user);
+                }
+                initTable();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return AllUsers;
     }
 
     //This method uses the user list array list and dynamically generates a table for the admin to view each user's privileges.
