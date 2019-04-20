@@ -2,6 +2,7 @@ package com.example.homesecurityautomation;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,13 +56,28 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-//        myAppSocket = new Socket_AsyncTask();
-        //myAppSocket.execute();
 
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String userID = user.getEmail().replace(".","_");
         databaseReference = FirebaseDatabase.getInstance().getReference("users/" + userID);
+        lightON = findViewById(R.id.lightON);
+        lightOFF = findViewById(R.id.lightOFF);
+        textViewWelcome = findViewById(R.id.textViewWelcome);
+        textViewWelcome.setText("Welcome " + user.getEmail());
+        LogoutButton = findViewById(R.id.LogoutButton);
+        camera = findViewById(R.id.camera);
+        call = findViewById(R.id.call);
+        alarmON = findViewById(R.id.alarmON);
+        alarmOFF = findViewById(R.id.alarmOFF);
+        homeButton = findViewById(R.id.homeButton);
+        awayButton = findViewById(R.id.awayButton);
+        offButton = findViewById(R.id.offButton);
+        settings = findViewById(R.id.settings);
+        uploadButton = findViewById(R.id.Upload);
+        LogoutButton.setOnClickListener(this);
+        settings.setOnClickListener(this);
+        uploadButton.setOnClickListener(this);
 
         //Sets up the listener to retrieve the current user information and privileges.
         ValueEventListener userListener = new ValueEventListener() {
@@ -69,6 +85,58 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 userP = dataSnapshot.getValue(User.class);
+
+                if(userP.getLights())
+                {
+                    lightON.setOnClickListener(MainControlActivity.this);
+                    lightOFF.setOnClickListener(MainControlActivity.this);
+                }
+                else
+                {
+                    lightON.setBackgroundColor(Color.parseColor("#808080"));
+                    lightOFF.setBackgroundColor(Color.parseColor("#808080"));
+                }
+
+                if(userP.getAlarm())
+                {
+                    alarmON.setOnClickListener(MainControlActivity.this);
+                    alarmOFF.setOnClickListener(MainControlActivity.this);
+                }
+                else
+                {
+                    alarmON.setBackgroundColor(Color.parseColor("#808080"));
+                    alarmOFF.setBackgroundColor(Color.parseColor("#808080"));
+                }
+
+                if(userP.getMode())
+                {
+                    homeButton.setOnClickListener(MainControlActivity.this);
+                    awayButton.setOnClickListener(MainControlActivity.this);
+                    offButton.setOnClickListener(MainControlActivity.this);
+                }
+                else
+                {
+                    homeButton.setBackgroundColor(Color.parseColor("#808080"));
+                    awayButton.setBackgroundColor(Color.parseColor("#808080"));
+                    offButton.setBackgroundColor(Color.parseColor("#808080"));
+                }
+                if(userP.getCamera())
+                {
+                    camera.setOnClickListener(MainControlActivity.this);
+                }
+                else
+                {
+                    camera.setBackgroundColor(Color.parseColor("#808080"));
+                }
+
+                if(userP.getCall())
+                {
+                    call.setOnClickListener(MainControlActivity.this);
+                }
+                else
+                {
+                    call.setBackgroundColor(Color.parseColor("#808080"));
+                }
                 // ...
             }
 
@@ -79,61 +147,9 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 // ...
             }
         };
-
         databaseReference.addListenerForSingleValueEvent(userListener);
-        textViewWelcome = findViewById(R.id.textViewWelcome);
-        textViewWelcome.setText("Welcome " + user.getEmail());
-        LogoutButton = findViewById(R.id.LogoutButton);
-        camera = findViewById(R.id.camera);
-        call = findViewById(R.id.call);
-        lightON = findViewById(R.id.lightON);
-        lightOFF = findViewById(R.id.lightOFF);
-        alarmON = findViewById(R.id.alarmON);
-        alarmOFF = findViewById(R.id.alarmOFF);
-        //lightSwitch = findViewById(R.id.lightSwitch);
-        //alarmSwitch = findViewById(R.id.alarmSwitch);
-        homeButton = findViewById(R.id.homeButton);
-        awayButton = findViewById(R.id.awayButton);
-        offButton = findViewById(R.id.offButton);
-        settings = findViewById(R.id.settings);
-        uploadButton = findViewById(R.id.Upload);
 
 
-        final TextView textView = (TextView) findViewById(R.id.text);
-// ...
-
-// Instantiate the RequestQueue.
-       /* RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="172.20.10.5";
-
-// Request a string response from the provided URL.
-
-        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("That didn't work!");
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-*/
-        LogoutButton.setOnClickListener(this);
-        camera.setOnClickListener(this);
-        settings.setOnClickListener(this);
-        call.setOnClickListener(this);
-        lightON.setOnClickListener(this);
-        lightOFF.setOnClickListener(this);
-        alarmON.setOnClickListener(this);
-        alarmOFF.setOnClickListener(this);
-        uploadButton.setOnClickListener(this);
     }
 
     //This method responds to the listener objects such as the buttons and switches on the UI and will redirect to perform the appropriate actions based on the user input.
@@ -153,8 +169,14 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
         if(view == camera)
         {
-            finish();
-            startActivity(new Intent(this, AccessCamera.class));
+            if(userP.getCamera()) {
+                finish();
+                startActivity(new Intent(this, AccessCamera.class));
+            }
+            else{
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
         }
 
         if(view == settings)
@@ -179,7 +201,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(this, "CALLING 9-1-1", Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
             }
             return;
         }
@@ -194,7 +216,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             }
 
             else{
-                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
             }
             return;
         }
@@ -234,9 +256,29 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 ExecuteAction(action);
             }
             else{
-                Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
             }
             return;
+
+        }
+
+        if(view == homeButton || view == awayButton || view == offButton)
+        {
+            if(userP.getMode()) {
+
+                if (view == homeButton) {
+                    action = "HOMEMODE";
+                } else if (view == awayButton) {
+                    action = "AWAYMODE";
+                } else if (view == offButton) {
+                    action = "OFFMODE";
+                }
+                ExecuteAction(action);
+            }
+            else {
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+
+            }
 
         }
 
@@ -248,7 +290,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     //This method is used to send an http request to the server to turn on the lights.
     public void ExecuteAction(String action)
     {
-        //myAppSocket.getIPandPort();
+
         Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
         //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
         //Log.d("create socket", "socket");
@@ -259,58 +301,6 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    /*
-    public void getIPandPort()
-    {
-        String iPandPort = txtAddress;
-        Log.d("MYTEST" , "IP STRING: " + iPandPort);
-        String temp[] = iPandPort.split(":");
-        wifiModuleIp = temp[0];
-        wifiModulePort = Integer.parseInt(temp[1]);
-        Log.d("MYTEST" , "IP: " + wifiModuleIp);
-        Log.d("MYTEST" , "Port: " + wifiModulePort);
-
-    }
-
-
-    public class Socket_AsyncTask extends AsyncTask<Void, Void, Void>
-    {
-        Socket socket;
-
-        @Override
-        protected Void doInBackground(Void... params){
-            try{
-                Log.d("IN TRY", "TRYING");
-                InetAddress inetAddress = InetAddress.getByName(MainControlActivity.wifiModuleIp);
-                Log.d("IP ADDRESS: ", inetAddress.getHostAddress());
-                Log.d("PORT ADDRESS: ",MainControlActivity.wifiModulePort+"");
-                socket = new Socket(inetAddress, MainControlActivity.wifiModulePort);
-                Log.d("PORT ADDRESS: ","ports");
-                if (socket.getInetAddress().isReachable(1000))
-                {
-                    Log.d("CONNECTED", "No Error");
-                }
-                else{
-                    Log.d("Failed connection", "ERROR");
-                }
-                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                dataOutputStream.writeBytes(CMD);
-                dataOutputStream.flush();
-                dataOutputStream.close();
-                socket.close();
-            }
-            catch (UnknownHostException e)
-            {
-                e.printStackTrace();
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-    */
 }
 
 
