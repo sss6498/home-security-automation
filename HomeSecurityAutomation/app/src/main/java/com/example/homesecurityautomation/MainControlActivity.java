@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 //This class in the main control activity for the user. It allows the user to control the lights, alarm, and other features of the system. The class also helps the user navigate to the other features.
@@ -43,6 +45,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
     DatabaseReference databaseReference;
     User userP;
     String action = "";
+    List<Boolean> adminSwitchList;
 
     //This method sets up the MainControlActivity page by initializing the UI elements and setting up the features for the user to interact with.
     @Override
@@ -78,6 +81,29 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         LogoutButton.setOnClickListener(this);
         settings.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
+
+
+        adminSwitchList = new ArrayList<>();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    Boolean temp = postSnapshot.getValue(Boolean.class);
+                    adminSwitchList.add(temp);
+                }
+                //initTable();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/" + userID);
 
         //Sets up the listener to retrieve the current user information and privileges.
         ValueEventListener userListener = new ValueEventListener() {
@@ -150,6 +176,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         databaseReference.addListenerForSingleValueEvent(userListener);
 
 
+
+
     }
 
     //This method responds to the listener objects such as the buttons and switches on the UI and will redirect to perform the appropriate actions based on the user input.
@@ -169,11 +197,18 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
         if(view == camera)
         {
-            if(userP.getCamera()) {
-                finish();
-                startActivity(new Intent(this, AccessCamera.class));
+            if(adminSwitchList.get(1))
+            {
+                if(userP.getCamera()) {
+                    finish();
+                    startActivity(new Intent(this, AccessCamera.class));
+                }
+                else{
+                    Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+                }
             }
-            else{
+            else
+            {
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
             }
             return;
@@ -207,55 +242,85 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == lightON)
         {
-
-            if(userP.getLights())
+            if(adminSwitchList.get(2))
             {
-                action = "ON";
-                ExecuteAction(action);
-                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
-            }
+                if(userP.getLights())
+                {
+                    action = "ON";
+                    ExecuteAction(action);
+                    Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+                }
 
-            else{
+                else{
+                    Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
             }
+
             return;
         }
         if(view == lightOFF)
         {
-            if(userP.getLights())
+            if(adminSwitchList.get(2))
             {
-                action = "OFF";
-                ExecuteAction(action);
-                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+                if(userP.getLights())
+                {
+                    action = "OFF";
+                    ExecuteAction(action);
+                    Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+                }
             }
-            else{
+
+            else
+            {
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
             }
+
             return;
 
         }
         if(view == alarmON)
         {
-            if(userP.getAlarm())
+            if(adminSwitchList.get(0))
             {
-                Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
-                action = "ARMED";
-                ExecuteAction(action);
+                if(userP.getAlarm())
+                {
+                    Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
+                    action = "ARMED";
+                    ExecuteAction(action);
+                }
+                else{
+                    Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
+                }
             }
-            else{
+            else
+            {
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
             }
             return;
         }
         if(view == alarmOFF)
         {
-            if(userP.getAlarm())
+            if(adminSwitchList.get(0))
             {
-                Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
-                action = "DISARMED";
-                ExecuteAction(action);
+                if(userP.getAlarm())
+                {
+                    Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
+                    action = "DISARMED";
+                    ExecuteAction(action);
+                }
+                else{
+                    Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+                }
             }
-            else{
+            else
+            {
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
             }
             return;
