@@ -72,11 +72,19 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         if(view == call)
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Calling 9-1-1", Toast.LENGTH_SHORT); toast.show();
-            dialContactPhone("2019884763");
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "2019884763", null)));
+
         }
         if(view == takePic)
         {
             TakePicture();
+            try {
+                // thread to sleep for 1000 milliseconds
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            LoadPic();
         }
     }
 
@@ -103,7 +111,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
                     Log.d("picture", photo.getPhotoURL());
                 }
 
-                mProgressCircle.setVisibility(View.VISIBLE);
+                //mProgressCircle.setVisibility(View.VISIBLE);
                 mainPic.setImageURI(Uri.parse(photo.getPhotoURL()));
 
                 //mAdapter.setOnItemClickListener(Pictures.this);
@@ -113,13 +121,10 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(AccessCamera.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                mProgressCircle.setVisibility(View.INVISIBLE);
+                //mProgressCircle.setVisibility(View.INVISIBLE);
             }
         });
 
     }
 
-    private void dialContactPhone(final String phoneNumber) {
-        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
-    }
 }
