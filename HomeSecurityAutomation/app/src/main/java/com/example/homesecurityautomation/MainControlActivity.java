@@ -3,6 +3,7 @@ package com.example.homesecurityautomation;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -183,9 +184,6 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         };
         databaseReference.addListenerForSingleValueEvent(userListener);
 
-
-
-
     }
 
     //This method responds to the listener objects such as the buttons and switches on the UI and will redirect to perform the appropriate actions based on the user input.
@@ -241,7 +239,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
             if(userP.getCall())
             {
-                Toast.makeText(this, "CALLING 9-1-1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Proceeding to Emergency Contact", Toast.LENGTH_SHORT).show();
+                dialContactPhone("2019884763");
             }
             else{
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
@@ -373,6 +372,11 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         //Log.d("Execute socket", "execute");
 
     }
+
+    private void dialContactPhone(final String phoneNumber) {
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
+    }
+
 
 }
 
