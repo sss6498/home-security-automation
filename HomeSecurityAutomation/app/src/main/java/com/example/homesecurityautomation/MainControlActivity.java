@@ -112,7 +112,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 // Get Post object and use the values to update the UI
                 userP = dataSnapshot.getValue(User.class);
 
-                if(userP.getLights())
+                if(userP.getLights() && adminSwitchList.get(2))
                 {
                     lightON.setOnClickListener(MainControlActivity.this);
                     lightOFF.setOnClickListener(MainControlActivity.this);
@@ -123,7 +123,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                     lightOFF.setBackgroundColor(Color.parseColor("#808080"));
                 }
 
-                if(userP.getAlarm())
+                if(userP.getAlarm() && adminSwitchList.get(0))
                 {
                     alarmON.setOnClickListener(MainControlActivity.this);
                     alarmOFF.setOnClickListener(MainControlActivity.this);
@@ -146,7 +146,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                     awayButton.setBackgroundColor(Color.parseColor("#808080"));
                     offButton.setBackgroundColor(Color.parseColor("#808080"));
                 }
-                if(userP.getCamera())
+                if(userP.getCamera() && adminSwitchList.get(1))
                 {
                     camera.setOnClickListener(MainControlActivity.this);
                 }
