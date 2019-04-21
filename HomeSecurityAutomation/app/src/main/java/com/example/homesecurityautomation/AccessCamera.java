@@ -72,6 +72,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         if(view == call)
         {
             Toast toast = Toast.makeText(getApplicationContext(), "Calling 9-1-1", Toast.LENGTH_SHORT); toast.show();
+            dialContactPhone("2019884763");
         }
         if(view == takePic)
         {
@@ -116,5 +117,9 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    private void dialContactPhone(final String phoneNumber) {
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
 }
