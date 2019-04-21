@@ -103,6 +103,14 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        try {
+            // thread to sleep for 1000 milliseconds
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
         databaseReference = FirebaseDatabase.getInstance().getReference("users/" + userID);
 
         //Sets up the listener to retrieve the current user information and privileges.
