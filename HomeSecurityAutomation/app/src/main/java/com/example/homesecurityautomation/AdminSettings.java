@@ -222,7 +222,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     } */
 
 
-    
+
     public ArrayList<User> getEnableVal()
     {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");

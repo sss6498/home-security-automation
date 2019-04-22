@@ -46,6 +46,7 @@ import java.util.List;
     }
 
 
+    //takes images from calling class and displays them in a grid format on the app
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
