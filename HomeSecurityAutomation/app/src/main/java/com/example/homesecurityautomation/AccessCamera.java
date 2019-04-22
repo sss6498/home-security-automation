@@ -1,7 +1,10 @@
 package com.example.homesecurityautomation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +36,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
     DatabaseReference databaseReference;
     StorageReference storageReference;
     Photo photo;
+    String photoURI;
 
     //This method loads up the buttons and onclicklisteners as soon as the page is first loaded
     @Override
@@ -43,7 +49,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         gallery = findViewById(R.id.gallery);
         takePic = findViewById(R.id.takePic);
         call = findViewById(R.id.call);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Recent_Picture");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Recent_Pictures");
         //storageReference = FirebaseStorage.getInstance().getReference();
 
 
@@ -90,14 +96,16 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     public void TakePicture()
     {
+        /*
         action = "TAKEPIC";
         Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
         //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
         //Log.d("create socket", "socket");
         myAppSocket.setMessage(action);
         myAppSocket.execute();
+        */
         LoadPic();
-        mProgressCircle.setVisibility(View.INVISIBLE);
+        //mProgressCircle.setVisibility(View.INVISIBLE);
 
     }
 
@@ -107,12 +115,33 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    photo = postSnapshot.getValue(Photo.class);
-                    Log.d("picture", photo.getPhotoURL());
+                    photoURI = postSnapshot.getValue(String.class);
+                    Log.d("picture", photoURI);
                 }
 
                 //mProgressCircle.setVisibility(View.VISIBLE);
-                mainPic.setImageURI(Uri.parse(photo.getPhotoURL()));
+                try {
+                    Thread.sleep(600);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+
+                try {
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(photoURI));
+                    Glide.with(getApplicationContext())
+                            .load(photoURI)
+                            .into(mainPic);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+
+
+
+                //mainPic.setImageURI(Uri.parse(photoURI));
 
                 //mAdapter.setOnItemClickListener(Pictures.this);
 
