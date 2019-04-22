@@ -114,7 +114,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     public void LoadPic(){
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
