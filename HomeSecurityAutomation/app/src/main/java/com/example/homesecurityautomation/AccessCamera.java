@@ -32,7 +32,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
     private ImageButton back, gallery;
     private Button takePic, call;
     String action = "";
-    private ProgressBar mProgressCircle;
+    private ProgressBar ProgressCircle;
     DatabaseReference databaseReference;
     StorageReference storageReference;
     Photo photo;
@@ -49,6 +49,8 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         gallery = findViewById(R.id.gallery);
         takePic = findViewById(R.id.takePic);
         call = findViewById(R.id.call);
+        ProgressCircle = findViewById(R.id.progressBar);
+        ProgressCircle.setVisibility(View.INVISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Recent_Pictures");
         //storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -83,6 +85,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         }
         if(view == takePic)
         {
+            ProgressCircle.setVisibility(View.VISIBLE);
             TakePicture();
             try {
                 // thread to sleep for 1000 milliseconds
@@ -119,7 +122,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
                     Log.d("picture", photoURI);
                 }
 
-                //mProgressCircle.setVisibility(View.VISIBLE);
+
                 try {
                     Thread.sleep(600);
                 }
@@ -153,6 +156,9 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
                 //mProgressCircle.setVisibility(View.INVISIBLE);
             }
         });
+
+        ProgressCircle.setVisibility(View.INVISIBLE);
+
 
     }
 
