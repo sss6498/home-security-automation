@@ -83,33 +83,3 @@ import java.util.List;
     }
 }
 
-
-
-    /*
-    //constructor for adapter object
-    public CustomAdapter(Context context, int resourceid, List<Photo> photos) {
-        super(context, resourceid, photos);
-    }
-
-    //Gets the view that requires the adapters operations and returns a view that can be used to display the object.
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        if(row == null) {
-            LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = vi.inflate(R.layout.photo_pic, null);
-        }
-        final Photo thisPhoto = getItem(position);
-        final ImageView photo = row.findViewById(R.id.imageView);
-        try{
-            //Bitmap b = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), thisPhoto.getPhotoURL());
-            //photo.setImageBitmap(b);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return row;
-    }
-    */
-

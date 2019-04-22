@@ -41,30 +41,6 @@ import java.net.UnknownHostException;
             CMD = message;
         }
 
-        public void SendMessage(String message) {
-
-            String response = null;
-            CMD = message;
-            try {
-                    //read response from server.
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    PrintWriter out = new PrintWriter(socket.getOutputStream());
-
-                    out.write(CMD);
-                    out.flush();
-                    response = in.readLine();
-            }
-            catch (UnknownHostException e)
-            {
-                e.printStackTrace();
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-            return;
-
-        }
 
 
         @Override

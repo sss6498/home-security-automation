@@ -29,6 +29,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
     List<User> userList;
+    List<Boolean> adminSwitchList;
 
     //This method starts up the current activity and displays the administrator settings to the user.
     @Override
@@ -74,6 +75,54 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         EnableLight.setOnClickListener(this);
         EnableCamera.setOnClickListener(this);
         EnableAlarm.setOnClickListener(this);
+        adminSwitchList = new ArrayList<>();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    Boolean temp = postSnapshot.getValue(Boolean.class);
+                    adminSwitchList.add(temp);
+                }
+
+                if(adminSwitchList.get(0))
+                {
+                    EnableAlarm.setChecked(true);
+                }
+                else
+                {
+                    EnableAlarm.setChecked(false);
+                }
+
+                if(adminSwitchList.get(1))
+                {
+                    EnableCamera.setChecked(true);
+                }
+                else
+                {
+                    EnableCamera.setChecked(false);
+                }
+
+                if(adminSwitchList.get(2))
+                {
+                    EnableLight.setChecked(true);
+                }
+                else
+                {
+                    EnableLight.setChecked(false);
+                }
+                //initTable();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
     }
 
