@@ -89,7 +89,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             TakePicture();
             try {
                 // thread to sleep for 1000 milliseconds
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -99,14 +99,14 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     public void TakePicture()
     {
-        /*
+
         action = "TAKEPIC";
         Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
         //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
         //Log.d("create socket", "socket");
         myAppSocket.setMessage(action);
         myAppSocket.execute();
-        */
+
         LoadPic();
         //mProgressCircle.setVisibility(View.INVISIBLE);
 
@@ -114,7 +114,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     public void LoadPic(){
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {

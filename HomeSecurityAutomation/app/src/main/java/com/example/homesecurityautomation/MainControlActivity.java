@@ -39,7 +39,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth firebaseAuth;
     private TextView textViewWelcome;
-    private Button camera, call, lightON, alarmON, lightOFF, alarmOFF, LogoutButton;
+    private Button camera, call, lightON, alarmON, lightOFF, alarmOFF, alarmDIS, LogoutButton;
     //private Button uploadButton;
     private ImageButton settings;
     //private Switch lightSwitch, alarmSwitch;
@@ -75,6 +75,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         call = findViewById(R.id.call);
         alarmON = findViewById(R.id.alarmON);
         alarmOFF = findViewById(R.id.alarmOFF);
+        alarmDIS = findViewById(R.id.alarmDIS);
         homeButton = findViewById(R.id.homeButton);
         awayButton = findViewById(R.id.awayButton);
         offButton = findViewById(R.id.offButton);
@@ -137,11 +138,13 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                 {
                     alarmON.setOnClickListener(MainControlActivity.this);
                     alarmOFF.setOnClickListener(MainControlActivity.this);
+                    alarmDIS.setOnClickListener(MainControlActivity.this);
                 }
                 else
                 {
                     alarmON.setBackgroundColor(Color.parseColor("#808080"));
                     alarmOFF.setBackgroundColor(Color.parseColor("#808080"));
+                    alarmDIS.setBackgroundColor(Color.parseColor("#808080"));
                 }
 
                 if(userP.getMode())
@@ -205,15 +208,11 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
         if(view == camera)
         {
-            if(adminSwitchList.get(1))
+            if(adminSwitchList.get(1)&&userP.getCamera())
             {
-                if(userP.getCamera()) {
-                    finish();
-                    startActivity(new Intent(this, AccessCamera.class));
-                }
-                else{
-                    Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
-                }
+                finish();
+                startActivity(new Intent(this, AccessCamera.class));
+
             }
             else
             {
@@ -251,19 +250,13 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == lightON)
         {
-            if(adminSwitchList.get(2))
+            if(adminSwitchList.get(2)&&userP.getLights())
             {
-                if(userP.getLights())
-                {
-                    action = "ON";
-                    ExecuteAction(action);
-                    Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
-                }
-
-                else{
-                    Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
-                }
+                action = "ON";
+                ExecuteAction(action);
+                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
+
             else
             {
                 Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
@@ -273,17 +266,11 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == lightOFF)
         {
-            if(adminSwitchList.get(2))
+            if(adminSwitchList.get(2)&&userP.getLights())
             {
-                if(userP.getLights())
-                {
-                    action = "OFF";
-                    ExecuteAction(action);
-                    Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
-                }
+                action = "OFF";
+                ExecuteAction(action);
+                Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
 
             else
@@ -296,17 +283,11 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == alarmON)
         {
-            if(adminSwitchList.get(0))
+            if(adminSwitchList.get(0)&& userP.getAlarm())
             {
-                if(userP.getAlarm())
-                {
-                    Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
-                    action = "ARMED";
-                    ExecuteAction(action);
-                }
-                else{
-                    Toast.makeText(this, "User does not have access to this feature. Please contact the Adminstrator", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
+                action = "ARMED";
+                ExecuteAction(action);
             }
             else
             {
@@ -316,17 +297,27 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         }
         if(view == alarmOFF)
         {
-            if(adminSwitchList.get(0))
+            if(adminSwitchList.get(0)&&userP.getAlarm())
             {
-                if(userP.getAlarm())
-                {
-                    Toast.makeText(this, "Alarm is disarmed", Toast.LENGTH_SHORT).show();
-                    action = "DISARMED";
-                    ExecuteAction(action);
-                }
-                else{
-                    Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, "Alarm is turned Off", Toast.LENGTH_SHORT).show();
+                action = "OFF";
+                ExecuteAction(action);
+            }
+            else
+            {
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
+
+        }
+
+        if(view == alarmDIS)
+        {
+            if(adminSwitchList.get(0)&&userP.getAlarm())
+            {
+                Toast.makeText(this, "Alarm has been Disarmed until Armed again", Toast.LENGTH_SHORT).show();
+                action = "DISARM";
+                ExecuteAction(action);
             }
             else
             {

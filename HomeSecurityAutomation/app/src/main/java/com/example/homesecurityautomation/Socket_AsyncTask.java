@@ -18,8 +18,8 @@ import java.net.UnknownHostException;
     {
         Socket socket;
 
-        String txtAddress= "192.168.5.44:21567";
-        //String txtAddress= "192.168.30.70:9090";
+        String txtAddress= "192.168.20.116:21567";
+        //String txtAddress= "192.16.30.70:9090";
         public static String wifiModuleIp = "";
         public static int wifiModulePort = 0;
         public static String CMD = "0";
