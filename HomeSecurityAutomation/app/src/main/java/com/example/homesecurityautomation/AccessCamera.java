@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,11 +34,14 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
     private ImageButton back, gallery;
     private Button takePic, call;
     String action = "";
-    private ProgressBar ProgressCircle;
+    //private ProgressBar ProgressCircle;
     DatabaseReference databaseReference;
+    DatabaseReference dataFace;
     StorageReference storageReference;
     Photo photo;
-    String photoURI;
+    String photoURI, FaceStatus;
+    TextView faceRecStatus;
+    
 
     //This method loads up the buttons and onclicklisteners as soon as the page is first loaded
     @Override
@@ -49,9 +54,12 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         gallery = findViewById(R.id.gallery);
         takePic = findViewById(R.id.takePic);
         call = findViewById(R.id.call);
-        ProgressCircle = findViewById(R.id.progressBar);
-        ProgressCircle.setVisibility(View.INVISIBLE);
+        faceRecStatus = findViewById(R.id.faceRecStatus);
+
+        //ProgressCircle = findViewById(R.id.progressBar);
+        //ProgressCircle.setVisibility(View.INVISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Recent_Pictures");
+        dataFace = FirebaseDatabase.getInstance().getReference("Face_Rec_Status");
         //storageReference = FirebaseStorage.getInstance().getReference();
 
 
@@ -85,7 +93,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         }
         if(view == takePic)
         {
-            ProgressCircle.setVisibility(View.VISIBLE);
+            //ProgressCircle.setVisibility(View.VISIBLE);
             TakePicture();
             try {
                 // thread to sleep for 1000 milliseconds
@@ -94,6 +102,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
                 System.out.println(e);
             }
             LoadPic();
+            UpdateFaceRecStatus();
         }
     }
 
@@ -157,8 +166,52 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        ProgressCircle.setVisibility(View.INVISIBLE);
+        //ProgressCircle.setVisibility(View.INVISIBLE);
 
+    }
+
+    public void UpdateFaceRecStatus()
+    {
+        dataFace.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    FaceStatus = postSnapshot.getValue(String.class);
+                    Log.d("picture", photoURI);
+                }
+
+
+                try {
+                    Thread.sleep(600);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+
+                try {
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(photoURI));
+                    Glide.with(getApplicationContext())
+                            .load(photoURI)
+                            .into(mainPic);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+
+
+
+
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(AccessCamera.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                //mProgressCircle.setVisibility(View.INVISIBLE);
+            }
+        });
 
     }
 

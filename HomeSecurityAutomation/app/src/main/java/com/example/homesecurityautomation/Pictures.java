@@ -43,6 +43,7 @@ public class Pictures extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_pictures);
         databaseReference = FirebaseDatabase.getInstance().getReference("All_Image_Uploads_Database");
 
+
         /*
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference("Stored_Images");
