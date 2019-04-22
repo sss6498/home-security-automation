@@ -78,6 +78,8 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
         adminSwitchList = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
+
+        //This method gets all the admin settings from the firebase and uploads them to the app for the user
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -220,7 +222,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     } */
 
 
-
+    
     public ArrayList<User> getEnableVal()
     {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
