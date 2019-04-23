@@ -228,7 +228,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     public void IntruderDetected()
     {
-        action = "LightAlarm";
+        action = "ALARMON";
         Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
         //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
         //Log.d("create socket", "socket");
