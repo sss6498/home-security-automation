@@ -83,7 +83,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             }
 
                 try {
-                if(FaceStatus.equals("Testing"))
+                if(FaceStatus.equals("Testing..."))
                 {
                     faceRecStatus.setText("Running Algorithm...");
                     faceRecStatus.setBackgroundColor(Color.YELLOW);
