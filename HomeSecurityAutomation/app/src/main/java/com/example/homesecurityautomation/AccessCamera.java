@@ -101,6 +101,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
                     faceRecStatus.setBackgroundColor(Color.RED);
                     dataFace.removeEventListener(faceListener);
                     dataFace.child("Face_Status").setValue("Testing...");
+                    IntruderDetected();
                 }
             }
                 catch(Exception e)
@@ -222,6 +223,17 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         });
 
         //ProgressCircle.setVisibility(View.INVISIBLE);
+
+    }
+
+    public void IntruderDetected()
+    {
+        action = "LightAlarm";
+        Socket_AsyncTask myAppSocket = new Socket_AsyncTask();
+        //Socket_AsyncTask cmd_action = new Socket_AsyncTask();
+        //Log.d("create socket", "socket");
+        myAppSocket.setMessage(action);
+        myAppSocket.execute();
 
     }
 
