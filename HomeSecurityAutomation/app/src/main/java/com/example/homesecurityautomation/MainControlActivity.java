@@ -300,7 +300,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             if(adminSwitchList.get(0)&&userP.getAlarm())
             {
                 Toast.makeText(this, "Alarm is turned Off", Toast.LENGTH_SHORT).show();
-                action = "OFF";
+                action = "ALARMOFF";
                 ExecuteAction(action);
             }
             else

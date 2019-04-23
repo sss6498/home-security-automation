@@ -55,7 +55,7 @@ import java.net.UnknownHostException;
                 SocketAddress localaddr = new InetSocketAddress(inetAddress, wifiModulePort);
                 //socket.bind(localaddr);
                 //Log.d("PORT ADDRESS: ","ports");
-                if (socket.getInetAddress().isReachable(1000))
+                if (socket.getInetAddress().isReachable(2000))
                 {
                     Log.d("CONNECTED", "No Error");
                 }

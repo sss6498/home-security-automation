@@ -3,8 +3,10 @@ package com.example.homesecurityautomation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +43,8 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
     Photo photo;
     String photoURI, FaceStatus;
     TextView faceRecStatus;
-    
+    ValueEventListener faceListener;
+
 
     //This method loads up the buttons and onclicklisteners as soon as the page is first loaded
     @Override
@@ -60,6 +63,58 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
         //ProgressCircle.setVisibility(View.INVISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Recent_Pictures");
         dataFace = FirebaseDatabase.getInstance().getReference("Face_Rec_Status");
+
+        faceListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    FaceStatus = postSnapshot.getValue(String.class);
+                    Log.d("FaceStatus", FaceStatus);
+                }
+                dataFace.child("Face_Status").setValue("Testing");
+
+
+                try {
+                Thread.sleep(2000);
+            }
+                catch(Exception e)
+            {
+                System.out.println(e);
+            }
+
+                try {
+                if(FaceStatus.equals("Testing"))
+                {
+                    faceRecStatus.setText("Running Algorithm...");
+                    faceRecStatus.setBackgroundColor(Color.YELLOW);
+                }
+                else if(FaceStatus.equals("True"))
+                {
+                    faceRecStatus.setText("GOOD");
+                    faceRecStatus.setBackgroundColor(Color.GREEN);
+                    dataFace.removeEventListener(faceListener);
+                    dataFace.child("Face_Status").setValue("Testing...");
+                }
+                else if(FaceStatus.equals("False"))
+                {
+                    faceRecStatus.setText("BAD");
+                    faceRecStatus.setBackgroundColor(Color.RED);
+                    dataFace.removeEventListener(faceListener);
+                    dataFace.child("Face_Status").setValue("Testing...");
+                }
+            }
+                catch(Exception e)
+            {
+                System.out.println(e);
+            }
+
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(AccessCamera.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            //mProgressCircle.setVisibility(View.INVISIBLE);
+        }
+    };
         //storageReference = FirebaseStorage.getInstance().getReference();
 
 
@@ -97,12 +152,12 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
             TakePicture();
             try {
                 // thread to sleep for 1000 milliseconds
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             } catch (Exception e) {
                 System.out.println(e);
             }
             LoadPic();
-            UpdateFaceRecStatus();
+            dataFace.addValueEventListener(faceListener);
         }
     }
 
@@ -170,49 +225,10 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /*
     public void UpdateFaceRecStatus()
     {
-        dataFace.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    FaceStatus = postSnapshot.getValue(String.class);
-                    Log.d("picture", photoURI);
-                }
-
-
-                try {
-                    Thread.sleep(600);
-                }
-                catch(Exception e)
-                {
-                    System.out.println(e);
-                }
-
-                try {
-                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(photoURI));
-                    Glide.with(getApplicationContext())
-                            .load(photoURI)
-                            .into(mainPic);
-                }
-                catch(Exception e)
-                {
-                    System.out.println(e);
-                }
-
-
-
-
-
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(AccessCamera.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                //mProgressCircle.setVisibility(View.INVISIBLE);
-            }
-        });
-
+        dataFace.addValueEventListener(faceListener);
     }
-
+*/
 }
