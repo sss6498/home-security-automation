@@ -71,7 +71,7 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
                     FaceStatus = postSnapshot.getValue(String.class);
                     Log.d("FaceStatus", FaceStatus);
                 }
-                dataFace.child("Face_Status").setValue("Testing");
+                //dataFace.child("Face_Status").setValue("Testing");
 
 
                 try {
