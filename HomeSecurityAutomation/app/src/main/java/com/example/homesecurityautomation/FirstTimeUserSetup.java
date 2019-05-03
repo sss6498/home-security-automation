@@ -88,7 +88,8 @@ public class FirstTimeUserSetup extends AppCompatActivity implements View.OnClic
                     //user is registered
                     //will start profle actiivty here.
                     String ModEmail = email.replace(".", "_");
-                    User user = new User(email, password,true, true, true, true, true, true);
+                    User user = new User(email, password,
+                            true, true, true, true, true, true);
                     database.child("users").child(ModEmail).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

@@ -37,8 +37,6 @@ public class AccessCamera extends AppCompatActivity implements View.OnClickListe
     //private ProgressBar ProgressCircle;
     DatabaseReference databaseReference;
     DatabaseReference dataFace;
-    StorageReference storageReference;
-    Photo photo;
     String photoURI, FaceStatus;
     TextView faceRecStatus;
     
