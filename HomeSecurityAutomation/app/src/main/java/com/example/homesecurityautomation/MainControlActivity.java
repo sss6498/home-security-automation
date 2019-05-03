@@ -39,7 +39,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth firebaseAuth;
     private TextView textViewWelcome;
-    private Button camera, call, lightON, alarmON, lightOFF, alarmOFF, alarmDIS, LogoutButton;
+    private Button camera, call, lightON, alarmON, lightOFF, alarmOFF, alarmDIS, LogoutButton, alarmARM;
     //private Button uploadButton;
     private ImageButton settings;
     //private Switch lightSwitch, alarmSwitch;
@@ -76,6 +76,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         alarmON = findViewById(R.id.alarmON);
         alarmOFF = findViewById(R.id.alarmOFF);
         alarmDIS = findViewById(R.id.alarmDIS);
+        alarmARM = findViewById(R.id.alarmARM);
         homeButton = findViewById(R.id.homeButton);
         awayButton = findViewById(R.id.awayButton);
         offButton = findViewById(R.id.offButton);
@@ -139,12 +140,14 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
                     alarmON.setOnClickListener(MainControlActivity.this);
                     alarmOFF.setOnClickListener(MainControlActivity.this);
                     alarmDIS.setOnClickListener(MainControlActivity.this);
+                    alarmARM.setOnClickListener(MainControlActivity.this);
                 }
                 else
                 {
                     alarmON.setBackgroundColor(Color.parseColor("#808080"));
                     alarmOFF.setBackgroundColor(Color.parseColor("#808080"));
                     alarmDIS.setBackgroundColor(Color.parseColor("#808080"));
+                    alarmARM.setBackgroundColor(Color.parseColor("#808080"));
                 }
 
                 if(userP.getMode())
@@ -252,7 +255,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         {
             if(adminSwitchList.get(2)&&userP.getLights())
             {
-                action = "ON";
+                action = "LIGHTON";
                 ExecuteAction(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
@@ -268,7 +271,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         {
             if(adminSwitchList.get(2)&&userP.getLights())
             {
-                action = "OFF";
+                action = "LIGHTOFF";
                 ExecuteAction(action);
                 Toast.makeText(this, "Changing lights", Toast.LENGTH_SHORT).show();
             }
@@ -285,8 +288,8 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
         {
             if(adminSwitchList.get(0)&& userP.getAlarm())
             {
-                Toast.makeText(this, "Alarm is armed", Toast.LENGTH_SHORT).show();
-                action = "ARMED";
+                Toast.makeText(this, "Alarm has been sounded", Toast.LENGTH_SHORT).show();
+                action = "ALARMON";
                 ExecuteAction(action);
             }
             else
@@ -300,7 +303,7 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             if(adminSwitchList.get(0)&&userP.getAlarm())
             {
                 Toast.makeText(this, "Alarm is turned Off", Toast.LENGTH_SHORT).show();
-                action = "OFF";
+                action = "ALARMOFF";
                 ExecuteAction(action);
             }
             else
@@ -316,7 +319,23 @@ public class MainControlActivity extends AppCompatActivity implements View.OnCli
             if(adminSwitchList.get(0)&&userP.getAlarm())
             {
                 Toast.makeText(this, "Alarm has been Disarmed until Armed again", Toast.LENGTH_SHORT).show();
-                action = "DISARM";
+                action = "DISARMED";
+                ExecuteAction(action);
+            }
+            else
+            {
+                Toast.makeText(this, "User does not have access to this feature. Please contact the Administrator", Toast.LENGTH_SHORT).show();
+            }
+            return;
+
+        }
+
+        if(view == alarmARM)
+        {
+            if(adminSwitchList.get(0)&&userP.getAlarm())
+            {
+                Toast.makeText(this, "Alarm has been ARMED until Armed again", Toast.LENGTH_SHORT).show();
+                action = "ARMED";
                 ExecuteAction(action);
             }
             else
