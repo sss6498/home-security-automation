@@ -25,8 +25,7 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
     private Button NewUserButton, FaceRecButton, back, deleteUser;
     private Switch EnableLight, EnableCamera, EnableAlarm;
     private TableLayout table;
-    String action = "";
-    FirebaseAuth firebaseAuth;
+
     DatabaseReference databaseReference;
     List<User> userList;
     List<Boolean> adminSwitchList;
@@ -206,21 +205,6 @@ public class AdminSettings extends AppCompatActivity implements View.OnClickList
             }
         }
     }
-
-    /*public void ChangeVals(int device, boolean status, ArrayList<User> AllUsers)
-    {
-        //0 Light, 1 Camera, 2 Alarm
-        //0 off, 1 on
-        String component = "lights";
-        for(User user: AllUsers)
-        {
-            databaseReference = FirebaseDatabase.getInstance().getReference("AdminSettingUsers");
-            databaseReference.child("lights").setValue(false);
-            Toast.makeText(NewUserSetup.this, "Admin Lights off", Toast.LENGTH_SHORT).show();
-        }
-
-    } */
-
 
 
     public ArrayList<User> getEnableVal()

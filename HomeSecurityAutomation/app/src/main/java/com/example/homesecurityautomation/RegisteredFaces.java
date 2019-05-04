@@ -30,8 +30,6 @@ import java.util.List;
 public class RegisteredFaces extends AppCompatActivity implements View.OnClickListener{
 
     private Button back, addNewFace;
-    FirebaseStorage storage;
-    StorageReference storageRef;
     DatabaseReference databaseReference;
     private GridView gridview;
     List<Photo> photos;

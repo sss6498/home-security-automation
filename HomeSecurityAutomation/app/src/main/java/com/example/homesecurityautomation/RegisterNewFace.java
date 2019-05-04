@@ -91,7 +91,7 @@ import java.util.List;
 public class RegisterNewFace extends AppCompatActivity implements View.OnClickListener {
 
     //The following two lines setup the objects that will be used later
-    private Button addFace, back, retakeButton;
+    private Button addFace, back;
     // Folder path for Firebase Storage.
     String Storage_Path = "Face_Image_Uploads/";
 
@@ -102,7 +102,7 @@ public class RegisterNewFace extends AppCompatActivity implements View.OnClickLi
     //SurfaceHolder surfaceHolder;
 
     private static final String TAG = "AndroidCameraApi";
-    private Button takePictureButton, retake, addface;
+    private Button takePictureButton, retake;
     private TextureView textureView;
     private Button rotate;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
