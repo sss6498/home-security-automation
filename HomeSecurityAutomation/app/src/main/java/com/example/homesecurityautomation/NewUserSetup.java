@@ -165,7 +165,7 @@ public class NewUserSetup extends AppCompatActivity implements View.OnClickListe
                     //will start profle actiivty here.
                     String ModEmail = email.replace(".", "_");
                     User user = new User(email, password,lightsToggle.isChecked(), alarmToggle.isChecked(), callToggle.isChecked(), pictureToggle.isChecked(), modeToggle.isChecked(), false);
-                    database.child("users").child(ModEmail).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        database.child("users").child(ModEmail).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(NewUserSetup.this, "Registered Successfully", Toast.LENGTH_SHORT).show();

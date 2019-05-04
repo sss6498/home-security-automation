@@ -23,9 +23,7 @@ import java.util.List;
 
 //This class is for the pictures page
 public class Pictures extends AppCompatActivity implements View.OnClickListener{
-    private ProgressBar progress;
-    FirebaseStorage storage;
-    StorageReference storageRef;
+
     DatabaseReference databaseReference;
     private GridView gridview;
     private Button back;
