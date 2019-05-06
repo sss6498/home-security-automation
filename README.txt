@@ -4,20 +4,25 @@ The Arduino folder holds all the code, testing and information containing relati
 The FacialRecognition folder contains all the code, testing documents, and other information relating to the facial recognition aspect of the project.
 The Design Folder contains the class uml diagram and another pdf with an explanation of the diagram
 
-*We did not follow the format itemized on the demo format, as 3_integration_testing and 4_data_collection did not apply to us. We did not put all coding directories in one folder called 1_code so as to not alter the code, as much of it includes filepaths that shouldn't be altered.*
+*We did not follow the format itemized on the demo format, as 3_integration_testing and 4_data_collection did not apply to us. We did not put all coding directories in one folder called 1_code so as to not alter the code, as much of it includes file paths that shouldn't be altered.*
 
-The 5_documentation folder holds the following files:
+The documentation folder holds All documents relating to the Reports, presentation slides and anything else appropriate.
+The following files in the folder are:
 
+    brochure.pdf
+    Demo1Slides.pdf
+    Demo2Slides.pdf
+    individual_contributions.pdf
+    Report 3.pdf
+    Report1Final.pdf
+    Report2Final.pdf
     technical_documentation.pdf
     user_documentation.pdf
-    brochure/flyer.pdf
-    presentation_slides.pdf
-    individual_contributions.pdf
 
 -----------------------------------------------ARDUINO CONFIGURATION------------------------------------------------------
 	Before running the arduino, make sure to have a raspberry pi model b+ and have arduino IDE installed on it.
-After downloading, inside your Arduino folder, make sure the libarary contains all the files same files that are
-listed as the Arduino folder in this directory. Some folders such as Arducam do not come in in the libarary after
+After downloading, inside your Arduino folder, make sure the library contains all the files same files that are
+listed as the Arduino folder in this directory. Some folders such as Arducam do not come in in the library after
 installation.
 
 	Follow the schematic diagram in the picture to set up all the hardware. Becaues some ports are not visible in
@@ -59,12 +64,12 @@ Regular User: email: nj216@scarletmail.rutgers.edu password: aaa111
 ---------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------FULL SYSTEM RUN-----------------------------------------------------------
-Run the following files on the raspberry pi to inialize the full system running
+Run the following files on the raspberry pi to initialize the full system running
 
 1. Run CameraCode.ino file - upload code to the Arduino with the camera
 2. Run the Processing file, should detect the camera and take test picture
 3. Run Functions.ino file - upload code to the Arduino without the camera
 4. Run the ServerFunction.py file - should detect arduino and wait for client connection
-5.
+5. Run the mobile app based on the configurations stated in the Mobile App section of this document
 6.
 ---------------------------------------------------------------------------------------------------------------------------
