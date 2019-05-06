@@ -1,3 +1,4 @@
+//Written, Tested, and Debugged By: Nikunj Jhaveri, Miraj Patel, Nirav Patel
 package com.example.homesecurityautomation;
 
 //This class is for the photo object for pictures to be viewed

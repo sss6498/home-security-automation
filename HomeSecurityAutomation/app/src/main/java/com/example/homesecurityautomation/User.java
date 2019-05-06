@@ -1,3 +1,4 @@
+//Written, Tested, and Debugged By: Nikunj Jhaveri, Miraj Patel, Nirav Patel
 package com.example.homesecurityautomation;
 
 //This class represents the user object and helps the app store the current user of the app. The user objects stores the user's email/username, password, privileges, and if they are an admin or not.
