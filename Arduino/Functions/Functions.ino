@@ -1,3 +1,9 @@
+  // written by: Harmit Badyal, Ashwin Suresh
+  // tested by: Harmit Badyal, Ashwin Suresh
+  // debugged by: Harmit Badyal, Ashwin Suresh
+  // etc.
+
+
 #include <MPU9250.h>
 
 int takePic = 7;
