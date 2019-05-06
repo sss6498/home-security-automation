@@ -1,3 +1,8 @@
+  // written by: Harmit Badyal
+  // tested by: Harmit Badyal
+  // debugged by: Harmit Badyal
+  // etc.
+
 /*
  * This code is a part of the camera demonstration for the demo.
  * This code should be uploaded onto the arduino before the 
