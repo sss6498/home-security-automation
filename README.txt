@@ -46,9 +46,16 @@ to (the one with the rest of the devices, not the camera). So if the Second Ardu
 * The UI design in XML is located in HomeSecurityAutomation\app\src\main\res\layout
 
 To run the mobile app the user must first download Android Studio IDE onto their computer. Once installed the HomeSecurityAutomation folder that is within the entire project folder must be opened up in the Android Studio software. If the entire project folder is selected to open up in android studio the IDE will not recognize the app code configuration files and will not be able to run the app. Once the code is opened several configuration steps need to be taken to run the system.
-The user must navigate to the Socket_AsyncTask class in the main java source code folder. There the String variable txtAddress must be changed to represent the IP address of the Raspberry Pi and the port chosen by the server code that is also located on the Pi. The format for the string variable should be "ip:port" where the ip represent just the ip address number and the port is the port number. Once completed the user must either run the app on an emulation devuce or directly download the app onto their android smart phone. The phone or emulation device's software must be running Android Pie, API level 28 at minimum.
 
+The user must navigate to the Socket_AsyncTask class in the main java source code folder. There the String variable txtAddress must be changed to represent the IP address of the Raspberry Pi and the port chosen by the server code that is also located on the Pi. The format for the string variable should be "ip:port" where the ip represent just the ip address number and the port is the port number. Once completed the user must either run the app on an emulation device or directly download the app onto their android smart phone. The phone or emulation device's software must be running Android Pie, API level 28 at minimum.
 
+The device that is running the app must be connected to the same wifi network as the Raspberry Pi. If on a secured network the two devices may not be able to connect to each other and instead the user should switch over to an open wifi network. Once logged in the user can either enter a new first time email and password by pressing the SETUP button or enter in an already created email and password combination to access the app. Some email and password configurations are given below. Once logged into the app the user has access to all of the features provided all of the other configuration steps for every system is done correctly.
+
+Sample login credentials:
+Administrator: email: nikunjjhaveri@gmail.com password: abcd1234
+Regular User: email: nj216@scarletmail.rutgers.edu password: aaa111
+
+---------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------FULL SYSTEM RUN-----------------------------------------------------------
 Run the following files on the raspberry pi to inialize the full system running
