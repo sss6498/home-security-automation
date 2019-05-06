@@ -1,3 +1,6 @@
+  // written by: Harmit Badyal
+  // tested by: Harmit Badyal
+  // debugged by: Harmit Badyal
 
 import processing.serial.*;       // import the Processing serial library
 
