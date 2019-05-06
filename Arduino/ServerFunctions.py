@@ -1,3 +1,8 @@
+  # written by: Harmit Badyal
+  # tested by: Harmit Badyal
+  # debugged by: Harmit Badyal
+
+
 import serial as sl				#initializes serial input
 ser = sl.Serial('/dev/ttyACM1',9600)	#Sets serial to port
 from socket import *
