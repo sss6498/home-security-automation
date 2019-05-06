@@ -2,7 +2,7 @@ This Repository hosts the Home Security Automation Project.
 The HomeSecurityAutomation folder contains all the code, testing documents, and other information regarding the mobile application.
 The Arduino folder holds all the code, testing and information containing relating to the hardware components of the project.
 The FacialRecognition folder contains all the code, testing documents, and other information relating to the facial recognition aspect of the project.
-The Design Folder contains the class uml diagram and another pdf with an explanation of the diagram
+The Design Folder contains the class uml diagram and another pdf with an explanation of the diagram.
 
 *We did not follow the format itemized on the demo format, as 3_integration_testing and 4_data_collection did not apply to us. We did not put all coding directories in one folder called 1_code so as to not alter the code, as much of it includes file paths that shouldn't be altered.*
 
