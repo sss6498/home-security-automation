@@ -1,0 +1,21 @@
+Unifying_Scripts
+
+This folder contains all the scripts for integrated the arduino to the andriod app. This is the why i called them the unifying scripts. 
+
+dirListener.sh
+
+This is a bash script that listens to a certain directory in the system that it is running on. If a certain file is added to the directory, the script detects it. Displays the file name and then runs the python script which is the second script i will be talking about. The bash script runs this functionality in a infinite while loop and thus we just have to run the bash script once before the start of the process in order for the entire streamline to work smoothly indefinitely. 
+
+
+UploadToFirebase.py 
+
+This is a python script that takes in a file name which the bash script provides and uploads that file to firebase storage, which acts like a bin that holds all the raw files such as pictures, videos, and other text files. The script then writes the public url, which is an url that anyone can take and access the picture that was uploaded into storage. It writes this public url into the database as text. The android app then reads this addition to the database, and retreives the photo from the url. 
+
+
+HomeAutomationCreds.json 
+
+This is a file with all the credentails for the email accounts attached with firebase database and the security creds for accessing the accounts on the internet in the local system. This file has to be manually set in the linux shell prior. But once it is set, there is no further steps to perform. 
+
+
+
+
