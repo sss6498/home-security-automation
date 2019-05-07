@@ -45,7 +45,30 @@ to (the one with the rest of the devices, not the camera). So if the Second Ardu
 '/dev/ttyACM1' would be changed to 'ACM2'.
 --------------------------------------------------------------------------------------------------------------------------
 
-------------------------------------------------Mobile App Configuration---------------------------------------------------
+---------------------------------------------Unifying Scripts Configuration-----------------------------------------------
+
+Before running the entire system it is important to have a form of communication between the arduino and the andriod app. This is where the two unifying scripts come into play. 
+
+First we have to download a lot of the dependencies that go with the python script. The python script uses a lot of dependecies from firebase. These dependencies vary with system thus you have to manually download while running the python script and looking at the errors. An easy way to download these dependencies is pip. pip is an easy way to install dependencies, you just have to follow the following format for the installation. "pip install *dependency*" 
+
+After downloading all the dependencies, the most important dependency to install is inotifytools from google. This is a library that lets us monitor a certain directory in linux. After downloading the dependencies, you'll have to run the dirListener.sh bash file before streamlining the entire process. 
+
+dirListener.sh
+
+This is a bash script that listens to a certain directory in the system that it is running on. If a certain file is added to the directory, the script detects it. Displays the file name and then runs the python script which is the second script i will be talking about. It also gives the file to the facial recognition scripts which then validate the face. The bash script runs this functionality in a infinite while loop and thus we just have to run the bash script once before the start of the process in order for the entire streamline to work smoothly indefinitely. 
+
+
+UploadToFirebase.py 
+
+This is a python script that takes in a file name which the bash script provides and uploads that file to firebase storage, which acts like a bin that holds all the raw files such as pictures, videos, and other text files. The script then writes the public url, which is an url that anyone can take and access the picture that was uploaded into storage. It writes this public url into the database as text. The android app then reads this addition to the database, and retreives the photo from the url. 
+
+
+HomeAutomationCreds.json 
+
+This is a file with all the credentails for the email accounts attached with firebase database and the security creds for accessing the accounts on the internet in the local system. This file has to be manually set in the linux shell prior. But once it is set, there is no further steps to perform. This file is blank due to security reasons. 
+
+
+------------------------------------------------Mobile App Configuration--------------------------------------------------
 * The documents that show case testing for this app are included in the App_Testing folder
 * This code utilizes the Android Studio IDE and is compiled and run using the run button in Android Studio
 * The main java source code is located in HomeSecurityAutomation\app\src\main\java\com\example\homesecurityautomation
@@ -71,5 +94,5 @@ Run the following files on the raspberry pi to initialize the full system runnin
 3. Run Functions.ino file - upload code to the Arduino without the camera
 4. Run the ServerFunction.py file - should detect arduino and wait for client connection
 5. Run the mobile app based on the configurations stated in the Mobile App section of this document
-6.
+6. Run the dirListener.sh bash file and have it running in a shell
 ---------------------------------------------------------------------------------------------------------------------------
