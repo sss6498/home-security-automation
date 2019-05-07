@@ -1,8 +1,6 @@
 #!/bin/bash
 
 DIR="/home/pi/Arduino/ArduCAM_OV562-master/data/capture/"
-#DIR="./Test_Folder"
-#DIR1="~/home/pi/Desktop/uploadToFirebase/Test_Folder/"
 EXT=".jpg"
 COMP=15
 
